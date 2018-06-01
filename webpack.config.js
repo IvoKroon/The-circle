@@ -1,6 +1,6 @@
-let path = require("path");
-let nodeExternals = require("webpack-node-externals");
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const nodeExternals = require('webpack-node-externals');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 const moduleObj = {
   rules: [
@@ -9,46 +9,50 @@ const moduleObj = {
       exclude: /node_modules/,
       use: [
         {
-          loader: "babel-loader"
-        }
-      ]
-    }
-  ]
+          loader: 'babel-loader',
+        },
+      ],
+    },
+  ],
 };
 
 const client = {
-  mode: "none",
+  mode: 'none',
   entry: {
-    client: "./src/client/index.js"
+    client: './src/client/index.js',
   },
-  target: "web",
+  target: 'web',
   output: {
-    filename: "[name].js",
-    path: path.resolve(__dirname, "dist")
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
   },
   resolve: {
-    modules: [path.resolve(__dirname, "src"), "node_modules"]
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   module: moduleObj,
   plugins: [
     new HtmlWebPackPlugin({
-      template: "src/client/index.html"
-    })
-  ]
+      template: 'src/client/index.html',
+    }),
+  ],
 };
 
 const server = {
-  mode: "none",
+  mode: 'none',
   entry: {
-    server: "./src/server/index.js"
+    server: './src/server/index.js',
   },
-  target: "node",
+  target: 'node',
   output: {
-    filename: "[name].js",
-    path: path.resolve(__dirname, "dist")
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),
   },
   module: moduleObj,
-  externals: [nodeExternals()]
+  externals: [nodeExternals()],
 };
 
 module.exports = [client, server];
