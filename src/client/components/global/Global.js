@@ -5,6 +5,7 @@ const MainContainer = styled('div')`
   width: 860px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 40px;
 `;
 
 export { MainContainer };

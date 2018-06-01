@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import styled from "react-emotion";
+import React, { Component } from 'react';
+import styled from 'react-emotion';
 
-const Container = styled("div")`
+const Container = styled('div')`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export default class ProductContainer extends Component {

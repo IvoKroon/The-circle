@@ -7,9 +7,9 @@ import Footer from './components/global/Footer';
 
 // PAGES
 import Home from './components/pages/Home';
-import About from './components/pages/About';
-import Topics from './components/pages/Topics';
-import TopicDetail from './components/pages/TopicDetail';
+import Account from './components/pages/Account';
+import Circles from './components/pages/Circles';
+import CircleDetail from './components/pages/CircleDetail';
 
 injectGlobal(`
   *, body {
@@ -18,6 +18,13 @@ injectGlobal(`
     box-sizing: border-box;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
   }
+  a{
+    text-decoration: none;
+    &:active, :visited, :link, :active{
+      text-decoration: none;
+    }
+  }
+
 `);
 const NoMatch = () => (
   <div>
@@ -30,9 +37,9 @@ const App = () => (
       <Header />
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/topics/:id" component={TopicDetail} />
-        <Route path="/topics" component={Topics} />
+        <Route path="/account" component={Account} />
+        <Route path="/circle/:id" component={CircleDetail} />
+        <Route path="/circles" component={Circles} />
         <Route component={NoMatch} />
       </Switch>
       <Footer />

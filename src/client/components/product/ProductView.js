@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import styled from "react-emotion";
+import React, { Component } from 'react';
+import styled from 'react-emotion';
 
-const Container = styled("div")`
+const Container = styled('div')`
   width: 200px;
   height: 250px;
   box-shadow: 0 3px 6px #d1cccc;
@@ -11,21 +11,21 @@ const Container = styled("div")`
   }
 `;
 
-const ImageView = styled("img")`
+const ImageView = styled('img')`
   height: 150px;
   width: 200px;
 `;
 
-const TextContainer = styled("div")`
+const TextContainer = styled('div')`
   margin-top: 5px;
   margin-left: 10px;
 `;
 
-const Title = styled("div")`
+const Title = styled('div')`
   font-weight: bold;
 `;
 
-const GroupName = styled("div")`
+const GroupName = styled('div')`
   color: #cdcdcd;
 `;
 

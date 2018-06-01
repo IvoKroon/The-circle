@@ -5,20 +5,31 @@ import { MainColor } from '../../config/color';
 
 const HeaderContainer = styled('div')`
   background: ${MainColor};
-  height: 65px;
+`;
+const ListItem = styled('li')`
+  display: inline-block;
+  padding: 10px;
+  &:hover {
+    background: rgba(5, 5, 5, 0.2);
+    border-radius: 2px;
+  }
+
+  & a:visited,
+  :link,
+  :active {
+    color: white;
+  }
 `;
 
 const List = styled('ul')`
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
   & li {
     color: white;
-    &:link {
-      color: red;
-    }
-    &:hover {
-      color: yellow;
-    }
-    &:active {
-      color: green;
+    & a:hover {
+      color: white;
     }
   }
 `;
@@ -26,15 +37,15 @@ const List = styled('ul')`
 const Header = () => (
   <HeaderContainer>
     <List>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/about">About</Link>
-      </li>
-      <li>
-        <Link to="/topics">Topics</Link>
-      </li>
+      <Link to="/">
+        <ListItem>Home</ListItem>
+      </Link>
+      <Link to="/circles">
+        <ListItem>Circles</ListItem>
+      </Link>
+      <Link to="/account">
+        <ListItem>Account</ListItem>
+      </Link>
     </List>
   </HeaderContainer>
 );
