@@ -1,8 +1,11 @@
-import React, { Component } from "react";
-import styled from "react-emotion";
+import styled from 'react-emotion';
 
-const Title = styled("h1")`
+const Title = styled('h1')`
   font-size: 40px;
 `;
 
-export { Title };
+const Header2 = styled('h2')`
+  font-size: 30px;
+`;
+
+export { Title, Header2 };
