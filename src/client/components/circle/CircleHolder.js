@@ -10,7 +10,7 @@ const Holder = styled('div')`
 const CircleHolder = ({ children }) => <Holder>{children}</Holder>;
 
 CircleHolder.propTypes = {
-  children: PropTypes.any.isRequired,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 export default CircleHolder;

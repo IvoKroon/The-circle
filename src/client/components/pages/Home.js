@@ -1,8 +1,8 @@
 import React from 'react';
 import ProductContainer from '../product/ProductContainer';
 import ProductView from '../product/ProductView';
-import { Title } from '../global/Headers';
-import { MainContainer } from '../global/Global';
+import { Title } from '../general/Headers';
+import { MainContainer } from '../general/Global';
 
 const Home = () => (
   <MainContainer>

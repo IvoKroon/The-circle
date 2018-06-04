@@ -2,14 +2,15 @@ import React from 'react';
 import { injectGlobal } from 'emotion';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // HEADER
-import Header from './components/global/Header';
-import Footer from './components/global/Footer';
+import Header from './components/general/Header';
+import Footer from './components/general/Footer';
 
 // PAGES
 import Home from './components/pages/Home';
 import Account from './components/pages/Account';
 import Circles from './components/pages/Circles';
 import CircleDetail from './components/pages/CircleDetail';
+import CreateCircle from './components/pages/CreateCircle';
 
 injectGlobal(`
   *, body {
@@ -38,6 +39,7 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/account" component={Account} />
+        <Route path="/createcircle" component={CreateCircle} />
         <Route path="/circle/:id" component={CircleDetail} />
         <Route path="/circles" component={Circles} />
         <Route component={NoMatch} />
