@@ -1,6 +1,8 @@
 import React from 'react';
 import { injectGlobal } from 'emotion';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import { TextColor } from './config/color';
 // HEADER
 import Header from './components/general/Header';
 import Footer from './components/general/Footer';
@@ -14,6 +16,7 @@ import CreateCircle from './components/pages/CreateCircle';
 
 injectGlobal(`
   *, body {
+    color:${TextColor};
     margin:0;
     padding:0;
     box-sizing: border-box;
