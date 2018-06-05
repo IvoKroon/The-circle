@@ -50,6 +50,7 @@ const App = () => (
         <Route path="/circles" component={Circles} />
         <Route path="/products/:id" component={ProductDetail} />
         <Route path="/products" component={Products} />
+        <Route path="/notfound" component={NoMatch} />
         <Route component={NoMatch} />
       </Switch>
       <Footer />

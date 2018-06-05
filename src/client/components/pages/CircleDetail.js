@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MainContainer } from '../general/GlobalCss';
-import Loader from '../general/Loader';
+import styled from 'react-emotion';
+import { withRouter } from 'react-router-dom';
 import firebase from '../general/firebaseConfig';
+import { Grey, MainContainer, CapitalizeFirstLetter } from '../general/GlobalCss';
+import Loader from '../general/Loader';
+import Notification from '../notification/Notification';
 
 class CircleDetail extends React.Component {
   constructor(props) {
@@ -18,16 +21,13 @@ class CircleDetail extends React.Component {
     const messagesRef = firebase.database().ref(`circles/${id}`);
 
     messagesRef.once('value', (snapshot) => {
-      const circle = snapshot.val();
-      this.setState({ circle, loading: false });
-      // const keys = Object.keys(snapshot.val());
-      // const circles = [];
-      // for (let i = 0; i < keys.length; i += 1) {
-      //   const key = keys[i];
-      //   const circle = { id: key, title: value[key].title, img: value[key].img };
-      //   circles.push(circle);
-      // }
-      // this.setState({ circles, loading: false });
+      console.log(snapshot.val());
+      if (snapshot.val() != null) {
+        const circle = snapshot.val();
+        this.setState({ circle, loading: false });
+      } else {
+        this.props.history.push('/notfound');
+      }
     });
   }
 
@@ -39,9 +39,16 @@ class CircleDetail extends React.Component {
       .off();
   }
   render() {
-    return (
+    return !this.state.loading ? (
       <MainContainer>
-        {!this.state.loading ? <h1>{this.state.circle.title}</h1> : <Loader />}
+        <h1>{CapitalizeFirstLetter(this.state.circle.title)}</h1>
+        <Notification name="Ivo" type="Searching" item="Skrews" />
+        <Notification name="Ivo" type="Searching" item="Skrews" />
+        <Notification name="Ivo" type="Searching" item="Skrews" />
+      </MainContainer>
+    ) : (
+      <MainContainer>
+        <Loader />
       </MainContainer>
     );
   }
@@ -53,6 +60,9 @@ CircleDetail.propTypes = {
       id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-export default CircleDetail;
+export default withRouter(CircleDetail);

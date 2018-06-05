@@ -9,11 +9,7 @@ const style = css`
 `;
 
 const ArrowIcon = () => (
-  <svg
-    height={this.props.height}
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="1017.939 2373.939 13.182 22.121"
-  >
+  <svg height="20" xmlns="http://www.w3.org/2000/svg" viewBox="1017.939 2373.939 13.182 22.121">
     <path
       id="Path_11"
       data-name="Path 11"

@@ -1,9 +1,10 @@
 import React from 'react';
+import { MainContainer } from '../general/GlobalCss';
 
 const Products = () => (
-  <div>
+  <MainContainer>
     <h1>Products</h1>
-  </div>
+  </MainContainer>
 );
 
 export default Products;
