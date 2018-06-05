@@ -1,32 +1,32 @@
 import React from 'react';
 import TextField from '../form/TextField';
-import ToggleButton from '../form/ToggleButton';
+
 import { MainContainer } from '../general/GlobalCss';
 import firebase from '../general/firebaseConfig';
 
-class CreateCircle extends React.Component {
+export default class CreateProduct extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       title: '',
-      desc: 'test',
-      status: false,
       img: 'https://picsum.photos/200/200/?random',
+      userId: 1,
+      desc: '',
     };
     this.title = '';
     this.database = firebase.database();
   }
 
-  createCircle() {
+  createProduct() {
     if (this.state.title.length > 0) {
       const {
-        title, desc, status, img,
+        title, desc, img, userId,
       } = this.state;
-      const ref = this.database.ref('circles');
+      const ref = this.database.ref('products');
       ref.push({
         title,
         desc,
-        status,
+        userId,
         img,
       });
     } else {
@@ -37,18 +37,17 @@ class CreateCircle extends React.Component {
   render() {
     return (
       <MainContainer>
-        <h1>Create circle</h1>
-        <TextField onChange={e => this.setState({ title: e.target.value })} placeHolder="Title" />
-        <ToggleButton
-          onChange={value => this.setState({ status: value })}
-          trueValue="Privé"
-          falseValue="Open"
-          checked={this.state.status}
+        <h1>Create Product</h1>
+        <TextField
+          onChange={e => this.setState({ title: e.target.value })}
+          placeHolder="Product title"
         />
-        <button onClick={() => this.createCircle()}>Create</button>
+        <TextField
+          onChange={e => this.setState({ desc: e.target.value })}
+          placeHolder="Product description"
+        />
+        <button onClick={() => this.createProduct()}>Create</button>
       </MainContainer>
     );
   }
 }
-
-export default CreateCircle;

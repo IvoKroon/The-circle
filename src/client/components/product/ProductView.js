@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'react-emotion';
 import { Shadow } from '../general/GlobalCss';
 
@@ -29,16 +29,14 @@ const GroupName = styled('div')`
   color: #cdcdcd;
 `;
 
-export default class ProductView extends Component {
-  render() {
-    return (
-      <Container>
-        <ImageView src="https://placeimg.com/200/150/arch" alt="test" />
-        <TextContainer>
-          <Title>Product name</Title>
-          <GroupName>Group name</GroupName>
-        </TextContainer>
-      </Container>
-    );
-  }
-}
+const ProductView = () => (
+  <Container>
+    <ImageView src="https://placeimg.com/200/150/arch" alt="test" />
+    <TextContainer>
+      <Title>Product name</Title>
+      <GroupName>Group name</GroupName>
+    </TextContainer>
+  </Container>
+);
+
+export default ProductView;

@@ -12,6 +12,7 @@ import Home from './components/pages/Home';
 import Account from './components/pages/Account';
 import Products from './components/pages/Products';
 import ProductDetail from './components/pages/ProductDetail';
+import CreateProduct from './components/pages/CreateProduct';
 
 import Circles from './components/pages/Circles';
 import CircleDetail from './components/pages/CircleDetail';
@@ -49,6 +50,7 @@ const App = () => (
         <Route path="/circle/:id" component={CircleDetail} />
         <Route path="/circles" component={Circles} />
         <Route path="/products/:id" component={ProductDetail} />
+        <Route path="/createproduct" component={CreateProduct} />
         <Route path="/products" component={Products} />
         <Route path="/notfound" component={NoMatch} />
         <Route component={NoMatch} />
