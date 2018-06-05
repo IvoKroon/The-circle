@@ -1,28 +1,29 @@
 import React from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
-import { SecondaryTextColor, Shadow, Grey } from '../general/GlobalCss';
+import { Shadow, Grey } from '../general/GlobalCss';
 import ArrowIcon from '../icons/ArrowIcon';
 import BoxIcon from '../icons/BoxIcon';
 
 const Holder = styled.div`
   display: flex;
-  height: 80px;
+  height: 70px;
   width: 50%;
   align-items: center;
   ${Shadow};
   margin-bottom: 10px;
 `;
 const Icon = styled.div`
-  width: 60px;
-  height: 60px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 25px;
 `;
 const ActionArrow = styled.div`
   margin-right: 15px;
   margin-left: auto;
 `;
 const MessageHolder = styled.div`
-  margin-left: 20px;
+  margin-left: 10px;
 `;
 const Name = styled.div`
   font-weight: bold;
@@ -50,7 +51,9 @@ const Notification = ({ item, name, type }) => {
 
   return (
     <Holder>
-      <Icon><BoxIcon></BoxIcon> </Icon>
+      <Icon>
+        <BoxIcon />
+      </Icon>
       <MessageHolder>
         <Name>{name}</Name>
         {text}

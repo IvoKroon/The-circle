@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { withRouter } from 'react-router-dom';
 import firebase from '../general/firebaseConfig';
-import { Grey, MainContainer, CapitalizeFirstLetter } from '../general/GlobalCss';
+import { MainContainer, CapitalizeFirstLetter } from '../general/GlobalCss';
 import Loader from '../general/Loader';
 import Notification from '../notification/Notification';
+
+const NotificationHolder = styled.div`
+  margin-top: 30px;
+`;
 
 class CircleDetail extends React.Component {
   constructor(props) {
@@ -42,9 +46,11 @@ class CircleDetail extends React.Component {
     return !this.state.loading ? (
       <MainContainer>
         <h1>{CapitalizeFirstLetter(this.state.circle.title)}</h1>
-        <Notification name="Ivo" type="Searching" item="Skrews" />
-        <Notification name="Ivo" type="Searching" item="Skrews" />
-        <Notification name="Ivo" type="Searching" item="Skrews" />
+        <NotificationHolder>
+          <Notification name="Ivo" type="Searching" item="Skrews" />
+          <Notification name="Ivo" type="Searching" item="Skrews" />
+          <Notification name="Ivo" type="Searching" item="Skrews" />
+        </NotificationHolder>
       </MainContainer>
     ) : (
       <MainContainer>
