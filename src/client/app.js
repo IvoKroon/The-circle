@@ -10,6 +10,9 @@ import Footer from './components/general/Footer';
 // PAGES
 import Home from './components/pages/Home';
 import Account from './components/pages/Account';
+import Products from './components/pages/Products';
+import ProductDetail from './components/pages/ProductDetail';
+
 import Circles from './components/pages/Circles';
 import CircleDetail from './components/pages/CircleDetail';
 import CreateCircle from './components/pages/CreateCircle';
@@ -45,6 +48,8 @@ const App = () => (
         <Route path="/createcircle" component={CreateCircle} />
         <Route path="/circle/:id" component={CircleDetail} />
         <Route path="/circles" component={Circles} />
+        <Route path="/products/:id" component={ProductDetail} />
+        <Route path="/products" component={Products} />
         <Route component={NoMatch} />
       </Switch>
       <Footer />

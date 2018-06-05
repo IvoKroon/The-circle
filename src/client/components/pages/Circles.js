@@ -31,6 +31,13 @@ class Circles extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    firebase
+      .database()
+      .ref('circles')
+      .off();
+  }
+
   render() {
     const data = [];
     for (let i = 0; i < this.state.circles.length; i += 1) {

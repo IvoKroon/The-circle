@@ -43,6 +43,9 @@ const Header = () => (
       <Link to="/circles">
         <ListItem>Circles</ListItem>
       </Link>
+      <Link to="/products">
+        <ListItem>Products</ListItem>
+      </Link>
       <Link to="/account">
         <ListItem>Account</ListItem>
       </Link>
