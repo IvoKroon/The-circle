@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { MainColor } from '../../config/color';
+import { MainColor } from './GlobalCss';
 import LoadIcon from '../icons/LoadIcon';
 
 const Holder = styled.div`

@@ -2,7 +2,7 @@ import React from 'react';
 import ProductContainer from '../product/ProductContainer';
 import ProductView from '../product/ProductView';
 import { Title } from '../general/Headers';
-import { MainContainer } from '../general/Global';
+import { MainContainer } from '../general/GlobalCss';
 
 const Home = () => (
   <MainContainer>

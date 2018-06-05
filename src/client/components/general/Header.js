@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'react-emotion';
-import { MainColor } from '../../config/color';
+import { MainColor } from '../general/GlobalCss';
 
 const HeaderContainer = styled('div')`
   background: ${MainColor};

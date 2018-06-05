@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { MainColor } from '../../config/color';
+import { MainColor } from './GlobalCss';
 
 const Container = styled.div`
   position: absolute;

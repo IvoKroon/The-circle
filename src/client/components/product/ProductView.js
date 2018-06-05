@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'react-emotion';
-import Shadow from '../../config/shadow';
+import { Shadow } from '../general/GlobalCss';
 
 const Container = styled('div')`
   width: 200px;

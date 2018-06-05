@@ -3,9 +3,9 @@ import React from 'react';
 import CircleItem from '../circle/CircleItem';
 import CircleItemAdd from '../circle/CircleItemAdd';
 import CircleHolder from '../circle/CircleHolder';
-import { MainContainer } from '../general/Global';
+import { MainContainer } from '../general/GlobalCss';
 import Loader from '../general/Loader';
-import firebase from '../../config/firebaseConfig';
+import firebase from '../general/firebaseConfig';
 
 class Circles extends React.Component {
   constructor(props) {

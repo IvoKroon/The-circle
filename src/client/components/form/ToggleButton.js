@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
-import { MainColor, SecondaryTextColor } from '../../config/color';
-import Shadow from '../../config/shadow';
+import { Shadow, MainColor, SecondaryTextColor } from '../general/GlobalCss';
 
 const Holder = styled.div`
   margin-top: 10px;
@@ -56,10 +55,7 @@ const ToggleButton = props => (
   <Holder>
     {props.trueValue && <Text active={props.checked}>{props.trueValue}</Text>}
     <Switch>
-      <Slider
-        onClick={() => props.onChange(!props.checked)}
-        active={props.checked}
-      />
+      <Slider onClick={() => props.onChange(!props.checked)} active={props.checked} />
     </Switch>
     {props.trueValue && <Text active={!props.checked}>{props.falseValue}</Text>}
   </Holder>

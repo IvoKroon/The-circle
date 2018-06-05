@@ -2,7 +2,7 @@ import React from 'react';
 import { injectGlobal } from 'emotion';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { TextColor } from './config/color';
+import { TextColor } from './components/general/GlobalCss';
 // HEADER
 import Header from './components/general/Header';
 import Footer from './components/general/Footer';
