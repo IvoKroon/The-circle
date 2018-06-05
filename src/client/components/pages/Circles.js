@@ -13,11 +13,10 @@ class Circles extends React.Component {
     this.state = { circles: [], loading: true };
   }
   componentWillMount() {
-    console.log('DID MOUNT');
     const messagesRef = firebase
       .database()
       .ref('circles')
-      .limitToLast(4);
+      .limitToLast(3);
 
     messagesRef.once('value', (snapshot) => {
       const value = snapshot.val();
@@ -28,54 +27,31 @@ class Circles extends React.Component {
         const circle = { id: key, title: value[key].title, img: value[key].img };
         circles.push(circle);
       }
-
-      console.log('Circles', circles);
       this.setState({ circles, loading: false });
-      // console.log(circles);
-      // this.setState({ circles });
-      // for (const key in snapshot.val()) {
-      //   // => do what you need
-      // }
     });
-
-    // messagesRef.on(
-    //   'value',
-    //   (snapshot) => {
-    //     const data = snapshot.val();
-    //     const message = {
-    //       img: data.img,
-    //       title: data.title,
-    //       desc: data.desc,
-    //       id: snapshot.key,
-    //     };
-    //     this.setState({ circles: [message].concat(this.state.circles) });
-    //     console.log(this.state.circles);
-    //   },
-    //   (err) => {
-    //     console.log(err);
-    //   },
-    // );
   }
 
   render() {
+    const data = [];
+    for (let i = 0; i < this.state.circles.length; i += 1) {
+      const circle = this.state.circles[i];
+      const circleItems = (
+        <CircleItem
+          linkTo={`/circle/${circle.id}`}
+          circleName={circle.title}
+          imageSrc={circle.img}
+          key={circle.id}
+        >
+          {circle.title}
+        </CircleItem>
+      );
+      data.push(circleItems);
+    }
+    data.push(<CircleItemAdd key={0} />);
+
     return (
       <MainContainer>
-        {!this.state.loading ? (
-          <CircleHolder>
-            {this.state.circles.map(circle => (
-              <CircleItem
-                linkTo={`/circle/${circle.id}`}
-                circleName={circle.title}
-                imageSrc={circle.img}
-                key={circle.id}
-              >
-                {circle.title}
-              </CircleItem>
-            ))}
-          </CircleHolder>
-        ) : (
-          <Loader />
-        )}
+        {!this.state.loading ? <CircleHolder>{data}</CircleHolder> : <Loader />}
       </MainContainer>
     );
   }
