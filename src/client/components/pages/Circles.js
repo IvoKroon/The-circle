@@ -4,12 +4,13 @@ import CircleItem from '../circle/CircleItem';
 import CircleItemAdd from '../circle/CircleItemAdd';
 import CircleHolder from '../circle/CircleHolder';
 import { MainContainer } from '../general/Global';
+import Loader from '../general/Loader';
 import firebase from '../../config/firebaseConfig';
 
 class Circles extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { circles: [] };
+    this.state = { circles: [], loading: true };
   }
   componentWillMount() {
     console.log('DID MOUNT');
@@ -24,11 +25,12 @@ class Circles extends React.Component {
       const circles = [];
       for (let i = 0; i < keys.length; i += 1) {
         const key = keys[i];
-        const circle = { id: key, title: value[key].title };
+        const circle = { id: key, title: value[key].title, img: value[key].img };
         circles.push(circle);
       }
 
       console.log('Circles', circles);
+      this.setState({ circles, loading: false });
       // console.log(circles);
       // this.setState({ circles });
       // for (const key in snapshot.val()) {
@@ -58,19 +60,22 @@ class Circles extends React.Component {
   render() {
     return (
       <MainContainer>
-        <CircleHolder>
-          <CircleItemAdd />
-          {this.state.circles.map(message => (
-            <CircleItem
-              linkTo={`/circle/${message.id}`}
-              circleName={message.title}
-              imageSrc={message.img}
-              key={message.id}
-            >
-              {message.title}
-            </CircleItem>
-          ))}
-        </CircleHolder>
+        {!this.state.loading ? (
+          <CircleHolder>
+            {this.state.circles.map(circle => (
+              <CircleItem
+                linkTo={`/circle/${circle.id}`}
+                circleName={circle.title}
+                imageSrc={circle.img}
+                key={circle.id}
+              >
+                {circle.title}
+              </CircleItem>
+            ))}
+          </CircleHolder>
+        ) : (
+          <Loader />
+        )}
       </MainContainer>
     );
   }
