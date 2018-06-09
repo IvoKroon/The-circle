@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
 import { injectGlobal } from 'emotion';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -39,25 +40,38 @@ const NoMatch = () => (
     <h1>NOT FOUND</h1>
   </div>
 );
-const App = () => (
-  <Router>
-    <div>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/account" component={Account} />
-        <Route path="/createcircle" component={CreateCircle} />
-        <Route path="/circle/:id" component={CircleDetail} />
-        <Route path="/circles" component={Circles} />
-        <Route path="/products/:id" component={ProductDetail} />
-        <Route path="/createproduct" component={CreateProduct} />
-        <Route path="/products" component={Products} />
-        <Route path="/notfound" component={NoMatch} />
-        <Route component={NoMatch} />
-      </Switch>
-      <Footer />
-    </div>
-  </Router>
-);
+@observer
+class App extends Component {
+  render() {
+    console.log(this.props.store);
+    // this.props.store.todos.map(todo => (
+    this.props.store.addTodo("Get Coffee");
+    this.props.store.addTodo("Write simpler code");
+    console.log(this.props.store.tasks);
+    this.props.store.tasks.map(data => {
+      console.log(data);
+    });
+    return (
+      <Router>
+        <div>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/account" component={Account} />
+            <Route path="/createcircle" component={CreateCircle} />
+            <Route path="/circle/:id" component={CircleDetail} />
+            <Route path="/circles" component={Circles} />
+            <Route path="/products/:id" component={ProductDetail} />
+            <Route path="/createproduct" component={CreateProduct} />
+            <Route path="/products" component={Products} />
+            <Route path="/notfound" component={NoMatch} />
+            <Route component={NoMatch} />
+          </Switch>
+          <Footer />
+        </div>
+      </Router>
+    );
+  }
+}
 
 export default App;

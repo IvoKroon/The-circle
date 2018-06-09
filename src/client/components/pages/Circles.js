@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from "mobx-react"
 
 import CircleItem from '../circle/CircleItem';
 import CircleItemAdd from '../circle/CircleItemAdd';
@@ -11,7 +12,9 @@ class Circles extends React.Component {
   constructor(props) {
     super(props);
     this.state = { circles: [], loading: true };
+    // console.log(this.props.store)
   }
+  
   componentWillMount() {
     const messagesRef = firebase
       .database()

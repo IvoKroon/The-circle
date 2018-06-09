@@ -1,4 +1,4 @@
 {
   "presets": ["env", "react"],
-  "plugins": ["emotion"]
+  "plugins": ["transform-decorators-legacy", "emotion", "transform-class-properties"]
 }
