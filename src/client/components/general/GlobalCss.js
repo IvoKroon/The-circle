@@ -1,6 +1,7 @@
 import styled from 'react-emotion';
 
 const MainColor = '#00A9AF';
+const White = 'white';
 const TextColor = '#050505';
 const SecondaryTextColor = 'rgba(5, 5, 5, 0.1)';
 const Grey = 'rgba(5, 5, 5, 0.4)';
@@ -24,4 +25,5 @@ export {
   TextColor,
   SecondaryTextColor,
   Shadow,
+  White,
 };

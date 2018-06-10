@@ -1,21 +1,33 @@
-import { observable } from "mobx"
+import { observable, action } from 'mobx';
 
 class Circle {
-  @observable title
-  @observable id
+  @observable id;
+  @observable title;
+  @observable desc;
+  @observable img;
 
-  constructor(title, id) {
-    this.title = title
-    this.id = id
+  constructor(id, title, desc, img) {
+    this.id = id;
+    this.title = title;
+    this.desc = desc;
+    this.img = img;
   }
 }
 
-export class CircleStore {
-  @observable circles = []
+class CircleStore {
+  @observable circles = [];
 
-  // createTodo(value) {
-  //   this.circles.push(new Circle(value, id))
-  // }
+  @action
+  setCircle(array) {
+    this.circles = array;
+  }
+
+  @action
+  addCircle(id, title, desc, img) {
+    this.circles.push(new Circle(id, title, desc, img));
+  }
 }
+// const circelStore = new CircleStore();
+export default new CircleStore();
 
-export default new CircleStore
+// export default new CircleStore();

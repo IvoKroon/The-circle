@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import PropTypes from 'prop-types';
+import { observer, Provider } from 'mobx-react';
 import { injectGlobal } from 'emotion';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
@@ -18,6 +19,8 @@ import CreateProduct from './components/pages/CreateProduct';
 import Circles from './components/pages/Circles';
 import CircleDetail from './components/pages/CircleDetail';
 import CreateCircle from './components/pages/CreateCircle';
+
+import CircleStore from './stores/CircleStore';
 
 injectGlobal(`
   *, body {
@@ -40,38 +43,65 @@ const NoMatch = () => (
     <h1>NOT FOUND</h1>
   </div>
 );
+
 @observer
 class App extends Component {
   render() {
-    console.log(this.props.store);
-    // this.props.store.todos.map(todo => (
-    this.props.store.addTodo("Get Coffee");
-    this.props.store.addTodo("Write simpler code");
-    console.log(this.props.store.tasks);
-    this.props.store.tasks.map(data => {
-      console.log(data);
-    });
+    // this.props.store.addCircle(1, 'title', 'desc', 'img');
+    console.log(this.props.store.circles);
+
+    // // // this.props.store.todos.map(todo => (
+    // // this.props.store.addTodo("Get Coffee");
+    // // this.props.store.addTodo("Write simpler code");
+    // // console.log(this.props.store.tasks);
+    // this.props.store.tasks.map(data => {
+    //   console.log(data);
+    // });
     return (
-      <Router>
-        <div>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/account" component={Account} />
-            <Route path="/createcircle" component={CreateCircle} />
-            <Route path="/circle/:id" component={CircleDetail} />
-            <Route path="/circles" component={Circles} />
-            <Route path="/products/:id" component={ProductDetail} />
-            <Route path="/createproduct" component={CreateProduct} />
-            <Route path="/products" component={Products} />
-            <Route path="/notfound" component={NoMatch} />
-            <Route component={NoMatch} />
-          </Switch>
-          <Footer />
-        </div>
-      </Router>
+      <Provider store={CircleStore}>
+        <Router>
+          <div>
+            <Header />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/account" component={Account} />
+              <Route path="/createcircle" component={CreateCircle} />
+              <Route path="/circle/:id" component={CircleDetail} />
+              <Route path="/circles" component={Circles} />
+              <Route path="/products/:id" component={ProductDetail} />
+              <Route path="/createproduct" component={CreateProduct} />
+              <Route path="/products" component={Products} />
+              <Route path="/notfound" component={NoMatch} />
+              <Route component={NoMatch} />
+            </Switch>
+            <Footer />
+          </div>
+        </Router>
+      </Provider>
     );
   }
 }
+
+App.propTypes = {
+  store: PropTypes.shape({
+    circles: PropTypes.object.isRequired,
+    addCircle: PropTypes.func.isRequired,
+  }).isRequired,
+};
+//   //   circles: PropTypes.array.isRequired,
+//   //   addCircle: PropTypes.func.isRequired
+//   // }).isRequired
+//   //     id: PropTypes.string.isRequired,
+//   //   }).isRequired,
+//   // }).isRequired,
+//   // history: PropTypes.shape({
+//   //   push: PropTypes.func.isRequired,
+//   // }).isRequired,
+// };
+
+// App.propTypes = {
+//   circles: PropTypes.observableArray.isRequired,
+//   store: PropTypes.any
+// };
 
 export default App;
