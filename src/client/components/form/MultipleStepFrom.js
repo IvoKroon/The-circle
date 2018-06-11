@@ -17,7 +17,7 @@ export default class MultipleStepFrom extends React.Component {
   }
 
   nextStep() {
-    if (this.state.step + 1 < this.props.components.length) {
+    if (this.state.step + 1 < this.props.components.length && this.props.nextStep(this.state.step)) {
       const step = this.state.step + 1;
       this.setState({ step });
     }
@@ -36,4 +36,5 @@ export default class MultipleStepFrom extends React.Component {
 }
 MultipleStepFrom.propTypes = {
   components: PropTypes.arrayOf(PropTypes.any).isRequired,
+  nextStep: PropTypes.func.isRequired,
 };

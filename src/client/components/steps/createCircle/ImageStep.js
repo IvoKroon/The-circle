@@ -2,6 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import CircleItem from '../../circle/CircleItem';
+import CircleItemAdd from '../../circle/CircleItemAdd';
+import firebase from '../../general/firebaseConfig';
+import { Random } from '../../general/Functions';
+
+const ImageField = styled.input`
+  display: none;
+`;
 
 class ImageStep extends React.Component {
   constructor(props) {
@@ -11,7 +18,7 @@ class ImageStep extends React.Component {
       imageSrc: null,
     };
     this.imageLoader = null;
-    this.onClick = this.onClick.bind(this);
+    this.upload = this.upload.bind(this);
   }
 
   componentDidMount() {
@@ -27,19 +34,29 @@ class ImageStep extends React.Component {
     };
   }
 
+  upload() {
+    const storage = firebase.storage();
+    const storageRef = storage.ref(`/circle/${Random()}`);
+    // const imagesRef = storageRef.child('images');
+
+    storageRef.put(this.state.image).then((snapshot) => {
+      console.log('Uploaded a blob or file!');
+    });
+  }
+
   render() {
+    console.log(Random());
     return (
       <div>
         <h1>Step 2 - image</h1>
         <p>Voeg een plaatje toe om de groep beter te herkennen</p>
         {this.state.imageSrc ? (
-          <CircleItem title="test" imageSrc={this.state.imageSrc} />
+          <CircleItem title="" imageSrc={this.state.imageSrc} />
         ) : (
-          <b>niks</b>
+          <CircleItemAdd onClick={() => this.imageLoader.click()} title="Add image" />
         )}
-
-        <button onClick={() => this.imageLoader.click()}>Add Image</button>
-        <input id="imageUploader" alt="test" onChange={e => this.onChange(e)} type="file" />
+        <ImageField id="imageUploader" alt="test" onChange={e => this.onChange(e)} type="file" />
+        <button onClick={() => this.upload()}>Upload</button>
       </div>
     );
   }

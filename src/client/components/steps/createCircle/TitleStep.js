@@ -7,8 +7,8 @@ const ImageStep = ({
   onChange, onChangeToggle, toggleState, titleValue,
 }) => (
   <div>
-    <h1>Step 1 - Title</h1>
-    <p>Voeg een plaatje toe om de groep beter te herkennen</p>
+    <h1>Title toevoegen</h1>
+    <p>Wat voor instellingen moeten wij de Circle geven?</p>
     <TextField onChange={e => onChange(e)} placeHolder="Title" value={titleValue} />
     <ToggleButton
       onChange={value => onChangeToggle(value)}
@@ -16,7 +16,6 @@ const ImageStep = ({
       falseValue="Privé"
       checked={toggleState}
     />
-    <button>Create</button>
   </div>
 );
 
