@@ -24,11 +24,21 @@ import CircleStore from './stores/CircleStore';
 
 injectGlobal(`
   *, body {
-    color:${TextColor};
     margin:0;
     padding:0;
-    box-sizing: border-box;
+    box-sizing: inherit;
+  }
+
+  body{
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+    color:${TextColor};
+    position:relative
+    padding-bottom: 6rem;
+    min-height: 100%;
+  }
+  html{
+    height: 100%;
+    box-sizing: border-box;
   }
   a{
     text-decoration: none;

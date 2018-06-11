@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
 import CircleItem from '../circle/CircleItem';
@@ -17,7 +18,6 @@ class Circles extends React.Component {
     this.state = { loading: true };
     this.loading = true;
   }
-
 
   componentWillMount() {
     if (this.props.store.circles.length !== 0) {
@@ -60,18 +60,17 @@ class Circles extends React.Component {
       const circle = this.props.store.circles[i];
       // console.log(circle);
       const circleItems = (
-        <CircleItem
-          linkTo={`/circle/${circle.id}`}
-          circleName={circle.title}
-          imageSrc={circle.img}
-          key={circle.id}
-        >
-          {circle.title}
-        </CircleItem>
+        <Link key={circle.id} to={`/circle/${circle.id}`}>
+          <CircleItem title={circle.title} imageSrc={circle.img}>
+            {circle.title}
+          </CircleItem>
+        </Link>
       );
       data.push(circleItems);
     }
-    data.push(<CircleItemAdd key={0} />);
+    data.push(<Link key={0} to="createcircle">
+      <CircleItemAdd title="+ add Circle" />
+              </Link>);
 
     return (
       <MainContainer>

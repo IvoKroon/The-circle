@@ -1,8 +1,9 @@
 import React from 'react';
-import TextField from '../form/TextField';
-import ToggleButton from '../form/ToggleButton';
 import { MainContainer } from '../general/GlobalCss';
 import firebase from '../general/firebaseConfig';
+import MultipleStepFrom from '../form/MultipleStepFrom';
+import TitleStep from '../steps/createCircle/TitleStep';
+import ImageStep from '../steps/createCircle/ImageStep';
 
 class CreateCircle extends React.Component {
   constructor(props) {
@@ -10,24 +11,27 @@ class CreateCircle extends React.Component {
     this.state = {
       title: '',
       desc: 'test',
-      status: false,
+      status: true,
       img: 'https://picsum.photos/200/200/?random',
     };
     this.title = '';
     this.database = firebase.database();
   }
 
+  onChangeImage(event) {
+    console.log(event.target.files[0]);
+  }
+
   createCircle() {
     if (this.state.title.length > 0) {
-      const {
-        title, desc, status, img,
-      } = this.state;
+      const { title, desc, status } = this.state;
+      // console.log(status);
       const ref = this.database.ref('circles');
       ref.push({
         title,
         desc,
         status,
-        img,
+        img: 'https://picsum.photos/200/200/?random',
       });
     } else {
       console.log('error');
@@ -37,15 +41,18 @@ class CreateCircle extends React.Component {
   render() {
     return (
       <MainContainer>
-        <h1>Create circle</h1>
-        <TextField onChange={e => this.setState({ title: e.target.value })} placeHolder="Title" />
-        <ToggleButton
-          onChange={value => this.setState({ status: value })}
-          trueValue="Privé"
-          falseValue="Open"
-          checked={this.state.status}
+        <MultipleStepFrom
+          components={[
+            <TitleStep
+              titleValue={this.state.title}
+              toggleState={this.state.status}
+              onChangeToggle={e => this.setState({ status: e })}
+              onChange={e => this.setState({ title: e.target.value })}
+            />,
+            <ImageStep onChange={e => this.onChangeImage(e)} />,
+          ]}
         />
-        <button onClick={() => this.createCircle()}>Create</button>
+        <h1>Create circle</h1>
       </MainContainer>
     );
   }

@@ -1,6 +1,11 @@
 const path = require('path');
+
 const nodeExternals = require('webpack-node-externals');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+
+// const dir = path.resolve(`${__dirname}/..`);
+const buildDirectoryName = './dist';
+// const distDirectory = path.resolve(dir, buildDirectoryName);
 
 const moduleObj = {
   rules: [
@@ -12,6 +17,10 @@ const moduleObj = {
           loader: 'babel-loader',
         },
       ],
+    },
+    {
+      test: /\.(png|jpg)$/,
+      loader: 'url-loader',
     },
   ],
 };
@@ -25,14 +34,22 @@ const client = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath: '/images/',
   },
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
   },
   devServer: {
     historyApiFallback: true,
+    contentBase: buildDirectoryName,
+    publicPath: '/',
+    compress: true,
+    port: 9000,
+    host: '0.0.0.0',
+    stats: 'minimal',
+    open: true,
   },
+
   module: moduleObj,
   plugins: [
     new HtmlWebPackPlugin({

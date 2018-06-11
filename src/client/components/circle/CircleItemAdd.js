@@ -1,16 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Inside, Title, Holder, Container } from './CircleItemStyle';
 
-const CircleItem = () => (
-  <Link to="createcircle">
-    <Holder>
-      <Inside>
-        <Title>+ Create circle</Title>
-      </Inside>
-      <Container />
-    </Holder>
-  </Link>
+const CircleItem = ({ title }) => (
+  <Holder>
+    <Inside>
+      <Title>{title}</Title>
+    </Inside>
+    <Container />
+  </Holder>
 );
+
+CircleItem.propTypes = {
+  title: PropTypes.string.isRequired,
+};
 
 export default CircleItem;

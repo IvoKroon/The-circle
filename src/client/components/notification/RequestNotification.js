@@ -8,10 +8,11 @@ import BoxIcon from '../icons/BoxIcon';
 const Holder = styled.div`
   display: flex;
   height: auto;
-  width: 50%;
+  margin-right:20px;
   align-items: center;
   ${Shadow};
   margin-bottom: 10px;
+  padding-right:25px;
 `;
 const Icon = styled.div`
   padding-left: 20px;
@@ -28,29 +29,12 @@ const Message = styled.div``;
 const ButtonHolder = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
-  display:flex;
+  display: flex;
 `;
 
-// const AcceptButton = styled.div`
-//   background
-// `;
-
-const RequestNotification = ({ user, item }) => (
-  //   let text = '';
-  //   if (type === 'Searching') {
-  //     text = (
-  //       <Message>
-  //         is <strong>Searching</strong> for a <strong>{item}</strong>
-  //       </Message>
-  //     );
-  //   } else if (type === 'Lent') {
-  //     text = (
-  //       <Message>
-  //         just <strong>Lent</strong> a <strong>{item}</strong>
-  //       </Message>
-  //     );
-  //   }
-
+const RequestNotification = ({
+  user, item, acceptAction, declineAction,
+}) => (
   <Holder>
     <Icon>
       <BoxIcon />
@@ -60,10 +44,10 @@ const RequestNotification = ({ user, item }) => (
         <b>{user}</b> would like to <b>lent a {item}</b>
       </Message>
       <ButtonHolder>
-        <Button textColor={White} backgroundColor={MainColor}>
+        <Button onClick={acceptAction} textColor={White} backgroundColor={MainColor}>
           Accept
         </Button>
-        <Button>Decline</Button>
+        <Button onClick={declineAction}>Decline</Button>
       </ButtonHolder>
     </MessageHolder>
   </Holder>
@@ -71,6 +55,8 @@ const RequestNotification = ({ user, item }) => (
 RequestNotification.propTypes = {
   item: PropTypes.string.isRequired,
   user: PropTypes.string.isRequired,
+  acceptAction: PropTypes.func.isRequired,
+  declineAction: PropTypes.func.isRequired,
 };
 
 export default RequestNotification;

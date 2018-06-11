@@ -9,11 +9,12 @@ const Input = styled.input`
   font-size: 16px;
 `;
 
-const TextField = ({ placeHolder, onChange }) => (
-  <Input onChange={e => onChange(e)} type="text" placeholder={placeHolder} />
+const TextField = ({ placeHolder, onChange, value }) => (
+  <Input value={value} onChange={e => onChange(e)} type="text" placeholder={placeHolder} />
 );
 
 TextField.propTypes = {
+  value: PropTypes.string.isRequired,
   placeHolder: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
