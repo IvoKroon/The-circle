@@ -8,7 +8,8 @@
   "globals": {
     "window": true,
     "document": true,
-    "FileReader": true
+    "FileReader": true,
+    "localStorage": true
   },
   "parser": "babel-eslint"
 }

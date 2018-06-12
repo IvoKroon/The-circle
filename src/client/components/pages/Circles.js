@@ -28,7 +28,7 @@ class Circles extends React.Component {
     } else {
       const messagesRef = firebase
         .database()
-        .ref(`circles/${this.props.user.user.id}`)
+        .ref('circles/')
         .limitToLast(3);
 
       messagesRef.once('value', (snapshot) => {

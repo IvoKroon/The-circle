@@ -21,7 +21,8 @@ class User {
 }
 
 class UserStore {
-  @observable user = new User(1, 'Ivo', 'Kroon', 0, 0, null, null);
+  @observable
+  user = new User(1, 'Ivo', 'Kroon', 0, 0, ['-LEn2NCgSUBzRXqiJBqy', '-LEn37jGlkJEwmvWqBQK'], null);
 
   @action
   createUser(id, firstname, lastname, lat, long, circles, products) {

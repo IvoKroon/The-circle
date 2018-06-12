@@ -22,6 +22,8 @@ import CreateCircle from './components/pages/CreateCircle';
 import CircleStore from './stores/CircleStore';
 import UserStore from './stores/UserStore';
 
+import firebase from './components/general/firebaseConfig';
+
 injectGlobal(`
   *, body {
     margin:0;
@@ -53,10 +55,40 @@ const NoMatch = () => (
     <h1>NOT FOUND</h1>
   </div>
 );
+const removeUser = () => {
+  console.log('REMOVING');
+  localStorage.removeItem('user');
+};
+
+const LoadUser = () => {
+  const id = 1;
+  const messagesRef = firebase.database().ref(`users/${id}`);
+  messagesRef.once('value', (snapshot) => {
+    console.log(snapshot.val());
+    const { firstname, lastname } = snapshot.val();
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        id,
+        firstname,
+        lastname,
+        circles: ['-LEpufwgFJmY67RCRhZz'],
+        products: [],
+      }),
+    );
+  });
+};
 
 @observer
 class App extends Component {
   render() {
+    // FOR RESETTING
+    // removeUser();
+
+    // we don't need to reload all the user data every refresh.
+    // if (!localStorage.getItem('user')) {
+      LoadUser();
+    // }
     return (
       <Provider circles={CircleStore} user={UserStore}>
         <Router>

@@ -77,7 +77,7 @@ class CreateCircle extends React.Component {
     if (this.state.title.length > 0) {
       const { title, desc, status } = this.state;
 
-      const ref = this.database.ref(`circles/${this.props.user.user.id}`);
+      const ref = this.database.ref('circles');
       ref
         .push({
           title,
