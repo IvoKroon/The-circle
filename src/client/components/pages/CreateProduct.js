@@ -1,8 +1,11 @@
 import React from 'react';
-import TextField from '../form/TextField';
-
 import { MainContainer } from '../general/GlobalCss';
+import MultipleStepFrom from '../form/MultipleStepFrom';
 import firebase from '../general/firebaseConfig';
+
+// import TitleStep from '../steps/createProduct/TitleStep';
+// import ImageStep from '../steps/createProduct/ImageStep';
+import AddToCircelStep from '../steps/createProduct/AddToCircelStep';
 
 export default class CreateProduct extends React.Component {
   constructor(props) {
@@ -37,16 +40,14 @@ export default class CreateProduct extends React.Component {
   render() {
     return (
       <MainContainer>
-        <h1>Create Product</h1>
-        <TextField
-          onChange={e => this.setState({ title: e.target.value })}
-          placeHolder="Product title"
+        <MultipleStepFrom
+          nextStepPossible={this.state.step}
+          nextStep={step => this.validate(step)}
+          finalAction={() => {
+            this.upload();
+          }}
+          components={[<div>test</div>]}
         />
-        <TextField
-          onChange={e => this.setState({ desc: e.target.value })}
-          placeHolder="Product description"
-        />
-        <button onClick={() => this.createProduct()}>Create</button>
       </MainContainer>
     );
   }

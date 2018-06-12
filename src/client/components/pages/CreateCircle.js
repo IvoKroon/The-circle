@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 import { MainContainer } from '../general/GlobalCss';
@@ -9,7 +10,7 @@ import ImageStep from '../steps/createCircle/ImageStep';
 import Loader from '../general/Loader';
 import { Random } from '../general/Functions';
 
-@inject('store')
+@inject('circles', 'user')
 @observer
 class CreateCircle extends React.Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class CreateCircle extends React.Component {
     };
     this.title = '';
     this.database = firebase.database();
+    console.log(this.props.user.user.id);
   }
   // Load image that is
   onChangeImage(event) {
@@ -75,21 +77,17 @@ class CreateCircle extends React.Component {
     if (this.state.title.length > 0) {
       const { title, desc, status } = this.state;
 
-      const ref = this.database.ref('circles');
+      const ref = this.database.ref(`circles/${this.props.user.user.id}`);
       ref
         .push({
           title,
           desc,
           status,
-          imageName,
+          img: imageName,
         })
         .then((data) => {
-          // ADD to mobx
-          // const circle = { id: key, title: value[key].title, imageName: value[key].imageName };
-          console.log(imageName);
-          this.props.store.addCircle(data.key, title, desc, imageName);
+          this.props.circles.addCircle(data.key, title, desc, imageName);
           this.setState({ redirect: true });
-          console.log('DONE', data.key);
         });
     } else {
       console.log('error');
@@ -129,5 +127,17 @@ class CreateCircle extends React.Component {
     );
   }
 }
+
+CreateCircle.wrappedComponent.propTypes = {
+  user: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+  circles: PropTypes.shape({
+    circles: PropTypes.object.isRequired,
+    addCircle: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default CreateCircle;

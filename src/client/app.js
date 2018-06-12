@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { observer, Provider } from 'mobx-react';
 import { injectGlobal } from 'emotion';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -21,6 +20,7 @@ import CircleDetail from './components/pages/CircleDetail';
 import CreateCircle from './components/pages/CreateCircle';
 
 import CircleStore from './stores/CircleStore';
+import UserStore from './stores/UserStore';
 
 injectGlobal(`
   *, body {
@@ -32,7 +32,7 @@ injectGlobal(`
   body{
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
     color:${TextColor};
-    position:relative
+    position:relative;
     padding-bottom: 6rem;
     min-height: 100%;
   }
@@ -57,18 +57,8 @@ const NoMatch = () => (
 @observer
 class App extends Component {
   render() {
-    // this.props.store.addCircle(1, 'title', 'desc', 'img');
-    console.log(this.props.store.circles);
-
-    // // // this.props.store.todos.map(todo => (
-    // // this.props.store.addTodo("Get Coffee");
-    // // this.props.store.addTodo("Write simpler code");
-    // // console.log(this.props.store.tasks);
-    // this.props.store.tasks.map(data => {
-    //   console.log(data);
-    // });
     return (
-      <Provider store={CircleStore}>
+      <Provider circles={CircleStore} user={UserStore}>
         <Router>
           <div>
             <Header />
@@ -91,27 +81,5 @@ class App extends Component {
     );
   }
 }
-
-App.propTypes = {
-  store: PropTypes.shape({
-    circles: PropTypes.object.isRequired,
-    addCircle: PropTypes.func.isRequired,
-  }).isRequired,
-};
-//   //   circles: PropTypes.array.isRequired,
-//   //   addCircle: PropTypes.func.isRequired
-//   // }).isRequired
-//   //     id: PropTypes.string.isRequired,
-//   //   }).isRequired,
-//   // }).isRequired,
-//   // history: PropTypes.shape({
-//   //   push: PropTypes.func.isRequired,
-//   // }).isRequired,
-// };
-
-// App.propTypes = {
-//   circles: PropTypes.observableArray.isRequired,
-//   store: PropTypes.any
-// };
 
 export default App;
