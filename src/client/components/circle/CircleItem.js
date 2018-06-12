@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Title, Inside, Holder, Container } from './CircleItemStyle';
 import { CapitalizeFirstLetter } from '../general/GlobalCss';
 
-const CircleItem = ({ imageSrc, title }) => (
+const CircleItem = ({ title, imageSrc }) => (
   <Holder>
     <Inside>
       <Title>{CapitalizeFirstLetter(title)}</Title>
     </Inside>
-    <Container src={imageSrc} />
+    <Container alt={title} src={imageSrc} />
   </Holder>
 );
 

@@ -35,7 +35,8 @@ class Circles extends React.Component {
         const circles = [];
         for (let i = 0; i < keys.length; i += 1) {
           const key = keys[i];
-          const circle = { id: key, title: value[key].title, img: value[key].img };
+          // id, title, desc, img
+          const circle = { id: key, title: value[key].title, img: value[key].imageName };
           circles.push(circle);
         }
         this.loading = false;
@@ -53,12 +54,9 @@ class Circles extends React.Component {
   }
 
   render() {
-    console.log('render');
     const data = [];
-    // console.log(this.props.store.circles.length);
     for (let i = 0; i < this.props.store.circles.length; i += 1) {
       const circle = this.props.store.circles[i];
-      // console.log(circle);
       const circleItems = (
         <Link key={circle.id} to={`/circle/${circle.id}`}>
           <CircleItem title={circle.title} imageSrc={circle.img}>

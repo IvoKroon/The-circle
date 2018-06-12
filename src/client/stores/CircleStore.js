@@ -24,7 +24,15 @@ class CircleStore {
 
   @action
   addCircle(id, title, desc, img) {
+    if (this.circles.length === 3) {
+      this.removeItem(0);
+    }
+    console.log(img);
     this.circles.push(new Circle(id, title, desc, img));
+  }
+
+  removeItem(index) {
+    this.circles.splice(index, 1);
   }
 }
 // const circelStore = new CircleStore();

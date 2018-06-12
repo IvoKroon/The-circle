@@ -1,11 +1,16 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
 import { MainContainer } from '../general/GlobalCss';
 import firebase from '../general/firebaseConfig';
-import { LoadImage, LoadMultipleImages } from '../general/FirebaseActions';
 import MultipleStepFrom from '../form/MultipleStepFrom';
 import TitleStep from '../steps/createCircle/TitleStep';
 import ImageStep from '../steps/createCircle/ImageStep';
+import Loader from '../general/Loader';
+import { Random } from '../general/Functions';
 
+@inject('store')
+@observer
 class CreateCircle extends React.Component {
   constructor(props) {
     super(props);
@@ -13,39 +18,26 @@ class CreateCircle extends React.Component {
       title: '',
       desc: 'test',
       status: true,
-      img: 'https://picsum.photos/200/200/?random',
       step: 0,
       image: false,
-      link: null,
+      imageSrc: null,
+      redirect: false,
+      loading: false,
     };
     this.title = '';
     this.database = firebase.database();
   }
-  componentDidMount() {
-    const imageList = ['8q674hjhqi', 'gvnc4ghcz1', 'hnxo4gjiru'];
-    LoadMultipleImages(imageList, 'circle').then((urls) => {
-      for (let i = 0; i < urls.length; i += 1) {
-        document.querySelectorAll('.image')[i].src = urls[i];
-      }
-    });
+  // Load image that is
+  onChangeImage(event) {
+    const reader = new FileReader();
+    this.setState({ image: event.target.files[0] }, () => reader.readAsDataURL(this.state.image));
+
+    reader.onload = () => {
+      this.setState({ imageSrc: reader.result });
+    };
   }
 
-  createCircle() {
-    if (this.state.title.length > 0) {
-      const { title, desc, status } = this.state;
-      // console.log(status);
-      const ref = this.database.ref('circles');
-      ref.push({
-        title,
-        desc,
-        status,
-        img: 'https://picsum.photos/200/200/?random',
-      });
-    } else {
-      console.log('error');
-    }
-  }
-
+  // The validator for the next step
   validate(step) {
     switch (step) {
       case 0:
@@ -64,26 +56,75 @@ class CreateCircle extends React.Component {
     return false;
   }
 
+  upload() {
+    const imageName = Random();
+    const storage = firebase.storage();
+    const storageRef = storage.ref(`/circle/${imageName}`);
+    const metadata = { contentType: this.state.image.type };
+    // START LOADING.
+    this.setState({ loading: true });
+
+    storageRef.put(this.state.image, metadata).then((snapshot) => {
+      snapshot.ref.getDownloadURL().then((downloadURL) => {
+        this.createCircle(downloadURL);
+      });
+    });
+  }
+
+  createCircle(imageName) {
+    if (this.state.title.length > 0) {
+      const { title, desc, status } = this.state;
+
+      const ref = this.database.ref('circles');
+      ref
+        .push({
+          title,
+          desc,
+          status,
+          imageName,
+        })
+        .then((data) => {
+          // ADD to mobx
+          // const circle = { id: key, title: value[key].title, imageName: value[key].imageName };
+          console.log(imageName);
+          this.props.store.addCircle(data.key, title, desc, imageName);
+          this.setState({ redirect: true });
+          console.log('DONE', data.key);
+        });
+    } else {
+      console.log('error');
+    }
+  }
+
   render() {
+    const { redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect to="/circles" />;
+    }
+
     return (
       <MainContainer>
-        <img className="image" src={this.state.link} alt="" />
-        <img className="image" src={this.state.link} alt="" />
-        <img className="image" src={this.state.link} alt="" />
-        <MultipleStepFrom
-          nextStepPossible={this.state.step}
-          nextStep={step => this.validate(step)}
-          components={[
-            <TitleStep
-              titleValue={this.state.title}
-              toggleState={this.state.status}
-              onChangeToggle={e => this.setState({ status: e })}
-              onChange={e => this.setState({ title: e.target.value })}
-            />,
-            <ImageStep onChange={e => this.onChangeImage(e)} />,
-            <ImageStep onChange={e => this.onChangeImage(e)} />,
-          ]}
-        />
+        {!this.state.loading ? (
+          <MultipleStepFrom
+            nextStepPossible={this.state.step}
+            nextStep={step => this.validate(step)}
+            finalAction={() => {
+              this.upload();
+            }}
+            components={[
+              <TitleStep
+                titleValue={this.state.title}
+                toggleState={this.state.status}
+                onChangeToggle={e => this.setState({ status: e })}
+                onChange={e => this.setState({ title: e.target.value })}
+              />,
+              <ImageStep image={this.state.imageSrc} onChange={e => this.onChangeImage(e)} />,
+            ]}
+          />
+        ) : (
+          <Loader />
+        )}
       </MainContainer>
     );
   }
