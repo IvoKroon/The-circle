@@ -9,7 +9,7 @@ import TitleStep from '../steps/createProduct/TitleStep';
 import ImageStep from '../steps/createProduct/ImageStep';
 import AddToCircleStep from '../steps/createProduct/AddToCircleStep';
 import { Random } from '../general/Functions';
-import { PromiseObservable } from 'rxjs/observable/PromiseObservable';
+
 
 @inject('user', 'circles')
 @observer

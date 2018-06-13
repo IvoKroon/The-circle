@@ -9,6 +9,7 @@ import { MainContainer, CapitalizeFirstLetter } from '../general/GlobalCss';
 import Loader from '../general/Loader';
 import Notification from '../notification/Notification';
 import { Holder } from '../circle/CircleItemStyle';
+import ProductLoader from '../product/ProductLoader';
 
 const NotificationHolder = styled.div`
   margin-top: 30px;
@@ -43,7 +44,7 @@ class CircleDetail extends React.Component {
 
   componentWillMount() {
     const { id } = this.props.match.params;
-    const messagesRef = firebase.database().ref(`circles/${this.props.user.user.id}/${id}`);
+    const messagesRef = firebase.database().ref(`circles/${id}`);
 
     messagesRef.once('value', (snapshot) => {
       if (snapshot.val() != null) {
@@ -63,19 +64,9 @@ class CircleDetail extends React.Component {
       .off();
   }
   render() {
-    console.log('render');
-    console.log(this.state.circle);
     let image = null;
     if (!this.state.loading) {
-      image = (
-        <Image
-          // style="object-fit: cover;"
-          width="250"
-          height="250"
-          // src='http://qnimate.com/wp-content/uploads/2014/03/images2.jpg'
-          src={this.state.circle.img}
-        />
-      );
+      image = <Image width="250" height="250" src={this.state.circle.img} />;
     }
     return !this.state.loading ? (
       <MainContainer>
@@ -100,6 +91,9 @@ class CircleDetail extends React.Component {
           </HolderRight>
         </Container>
         <h1>Producten</h1>
+        <div>
+          <ProductLoader products={this.state.circle.products} />
+        </div>
       </MainContainer>
     ) : (
       <MainContainer>

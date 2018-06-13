@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { Shadow } from '../general/GlobalCss';
 
@@ -29,14 +30,19 @@ const GroupName = styled('div')`
   color: #cdcdcd;
 `;
 
-const ProductView = () => (
+const ProductView = ({ image, title }) => (
   <Container>
-    <ImageView src="https://placeimg.com/200/150/arch" alt="test" />
+    <ImageView src={image} alt="test" />
     <TextContainer>
-      <Title>Product name</Title>
+      <Title>{title}</Title>
       <GroupName>Group name</GroupName>
     </TextContainer>
   </Container>
 );
+
+ProductView.propTypes = {
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 export default ProductView;
