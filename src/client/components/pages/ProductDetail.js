@@ -1,7 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { withRouter } from 'react-router-dom';
 import { Grey, MainContainer, CapitalizeFirstLetter } from '../general/GlobalCss';
+import firebase from '../general/firebaseConfig';
+import Loader from '../general/Loader';
+import TimePlanner from '../planner/TimePlanner';
 
 const SplitView = styled.div`
   display: flex;
@@ -17,21 +21,84 @@ const NameField = styled.div`
 
 const Location = styled.div``;
 
-const ProductDetail = () => (
-  <MainContainer>
-    <SplitView>
-      <SplitViewChild>
-        <img height="300" width="400" src={this.state.circle.img} alt={this.state.circle.title} />
-      </SplitViewChild>
-      <SplitViewChild>
-        <h1>{CapitalizeFirstLetter(this.state.circle.title)}</h1>
-        <NameField>Ivo Kroon</NameField>
-        <Location>
-          <b>Sommelsdijk</b> Nicolaas beetsstraat 18
-        </Location>
-      </SplitViewChild>
-    </SplitView>
-  </MainContainer>
-);
+class ProductDetail extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      product: null,
+    };
+  }
+
+  componentWillMount() {
+    const { id } = this.props.match.params;
+    const messagesRef = firebase.database().ref(`products/${id}`);
+
+    messagesRef.once('value', (snapshot) => {
+      if (snapshot.val() != null) {
+        const product = snapshot.val();
+        this.setState({ product, loading: false });
+      } else {
+        this.props.history.push('/notfound');
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    const { id } = this.props.match.params;
+    firebase
+      .database()
+      .ref(`products/${id}`)
+      .off();
+  }
+
+  render() {
+    return (
+      <MainContainer>
+        {!this.state.loading ? (
+          <SplitView>
+            <SplitViewChild>
+              <img
+                width="250"
+                height="250"
+                src={this.state.product.image}
+                alt={this.state.product.title}
+              />
+            </SplitViewChild>
+            <SplitViewChild>
+              <h1>{this.state.product.title}</h1>
+              <NameField>Ivo Kroon</NameField>
+              <Location>
+                <b>Sommelsdijk</b> Nicolaas beetsstraat 18
+              </Location>
+              <TimePlanner />
+            </SplitViewChild>
+          </SplitView>
+        ) : (
+          <Loader />
+        )}
+      </MainContainer>
+    );
+  }
+}
+
+ProductDetail.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
+
+// ProductDetail.wrappedComponent.propTypes = {
+//   user: PropTypes.shape({
+//     user: PropTypes.shape({
+//       id: PropTypes.number.isRequired,
+//     }),
+//   }).isRequired,
+// };
 
 export default withRouter(ProductDetail);

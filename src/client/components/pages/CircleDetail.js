@@ -80,6 +80,7 @@ class CircleDetail extends React.Component {
           </HolderLeft>
           <HolderRight>
             <h1>{CapitalizeFirstLetter(this.state.circle.title)}</h1>
+            <button></button>
             <p>
               <b>Sommelsdijk</b> Nicolaas beetsstraat 18
             </p>

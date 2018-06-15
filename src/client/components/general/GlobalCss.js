@@ -5,6 +5,7 @@ const White = 'white';
 const TextColor = '#050505';
 const SecondaryTextColor = 'rgba(5, 5, 5, 0.1)';
 const Grey = 'rgba(5, 5, 5, 0.4)';
+const LightGrey = 'rgba(5, 5, 5, 0.2)';
 const Shadow = 'box-shadow:0 3px 6px #d1cccc;';
 
 const MainContainer = styled('div')`
@@ -19,6 +20,7 @@ const CapitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.
 
 export {
   Grey,
+  LightGrey,
   CapitalizeFirstLetter,
   MainContainer,
   MainColor,

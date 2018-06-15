@@ -61,18 +61,20 @@ const removeUser = () => {
 };
 
 const LoadUser = () => {
-  const id = 1;
+  const id = 2;
   const messagesRef = firebase.database().ref(`users/${id}`);
   messagesRef.once('value', (snapshot) => {
-    console.log(snapshot.val());
+    console.log('LOADING USER', snapshot.val());
     const { firstname, lastname } = snapshot.val();
+    const circles = snapshot.val().circles ? snapshot.val().circles : [];
+    const circlesArray = Object.values(circles);
     localStorage.setItem(
       'user',
       JSON.stringify({
         id,
         firstname,
         lastname,
-        circles: ['-LEpufwgFJmY67RCRhZz'],
+        circles: circlesArray,
         products: [],
       }),
     );
@@ -87,7 +89,7 @@ class App extends Component {
 
     // we don't need to reload all the user data every refresh.
     // if (!localStorage.getItem('user')) {
-      LoadUser();
+    LoadUser();
     // }
     return (
       <Provider circles={CircleStore} user={UserStore}>

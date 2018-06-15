@@ -9,6 +9,8 @@ import CircleHolder from '../circle/CircleHolder';
 import { MainContainer } from '../general/GlobalCss';
 import Loader from '../general/Loader';
 import firebase from '../general/firebaseConfig';
+import { LoadCircles } from '../firebaseRequests/UserRequests';
+import { GetCirclesByCircleIds, CancelGetCirclesByCircleIds } from '../firebaseRequests/CircleRequests';
 
 @inject('user', 'circles')
 @observer
@@ -22,43 +24,25 @@ class Circles extends React.Component {
   componentWillMount() {
     // console.log
     if (this.props.circles.circles.length !== 0) {
-      console.log('here');
       this.loader = false;
       this.setState({ loading: false, hasCircles: true });
     } else {
-      const messagesRef = firebase
-        .database()
-        .ref('circles/')
-        .limitToLast(3);
-
-      messagesRef.once('value', (snapshot) => {
-        console.log(snapshot.val());
-        if (snapshot.val() === null) {
-          console.log('NO CIRCLES FOUND.');
-          this.setState({ loading: null });
+      // Load the circles
+      LoadCircles().then((circlesIds) => {
+        if (circlesIds.length > 0) {
+          GetCirclesByCircleIds(circlesIds).then((data) => {
+            this.props.circles.setCircle(data);
+            this.setState({ loading: null, hasCircles: true });
+          });
         } else {
-          const value = snapshot.val();
-          const keys = Object.keys(snapshot.val());
-          const circles = [];
-          for (let i = 0; i < keys.length; i += 1) {
-            const key = keys[i];
-            // id, title, desc, img
-            const circle = { id: key, title: value[key].title, img: value[key].img };
-            circles.push(circle);
-          }
-          this.loading = false;
-          this.props.circles.setCircle(circles);
-          this.setState({ loading: null, hasCircles: true });
+          this.setState({ loading: null, hasCircles: false });
         }
       });
     }
   }
 
   componentWillUnmount() {
-    firebase
-      .database()
-      .ref('circles')
-      .off();
+    CancelGetCirclesByCircleIds();
   }
 
   render() {

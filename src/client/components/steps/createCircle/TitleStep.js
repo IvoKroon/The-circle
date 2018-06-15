@@ -6,7 +6,6 @@ import ToggleButton from '../../form/ToggleButton';
 const ImageStep = ({
   onChange, onChangeToggle, toggleState, titleValue,
 }) => {
-  console.log('RENDER');
   return (
     <div>
       <h1>Title toevoegen</h1>

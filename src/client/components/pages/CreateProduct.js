@@ -10,7 +10,6 @@ import ImageStep from '../steps/createProduct/ImageStep';
 import AddToCircleStep from '../steps/createProduct/AddToCircleStep';
 import { Random } from '../general/Functions';
 
-
 @inject('user', 'circles')
 @observer
 export default class CreateProduct extends React.Component {
@@ -31,7 +30,6 @@ export default class CreateProduct extends React.Component {
   // WE NEED TO LOAD THE CIRCLES.
   componentDidMount() {
     const { circles } = JSON.parse(localStorage.user);
-    console.log(circles);
     const groupRef = firebase.database().ref('circles/');
     const promises = [];
     for (let i = 0; i < circles.length; i += 1) {
@@ -90,18 +88,20 @@ export default class CreateProduct extends React.Component {
           console.log(data.key);
           // NOW WE NEED TO SET THIS KEY TO ALL THE SELECTED CIRLCES
           // const
-          const updates = {};
-          const circleId = this.state.circles[0].id;
-          console.log('cirleid', this.state.circles);
-          updates[`/${circleId}/products/id`] = data.key;
-          firebase
-            .database()
-            .ref(`circles/${circleId}/products`)
-            .push(data.key)
-            .then((error) => {
-              console.log('DONE');
-              console.log(error);
-            });
+          // const updates = {};
+          for (let i = 0; i < this.state.circles.length; i += 1) {
+            if (this.state.circles[i].state) {
+              const circleId = this.state.circles[i].id;
+              firebase
+                .database()
+                .ref(`circles/${circleId}/products`)
+                .push(data.key)
+                .then((error) => {
+                  console.log('DONE');
+                  console.log(error);
+                });
+            }
+          }
         });
     } else {
       console.log('error');

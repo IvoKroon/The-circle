@@ -27,7 +27,9 @@ class CreateCircle extends React.Component {
     };
     this.title = '';
     this.database = firebase.database();
-    console.log(this.props.user.user.id);
+    this.userId = JSON.parse(localStorage.getItem('user')).id;
+    console.log('USEERID', this.userId);
+    // console.log(this.props.user.user.id);
   }
   // Load image that is
   onChangeImage(event) {
@@ -86,8 +88,18 @@ class CreateCircle extends React.Component {
           img: imageName,
         })
         .then((data) => {
-          this.props.circles.addCircle(data.key, title, desc, imageName);
-          this.setState({ redirect: true });
+          console.log(data);
+          // ADD CIRCLE TO USER
+          const { key } = data;
+          const userRef = this.database.ref(`users/${this.userId}/circles`);
+          const set = {};
+          set[key] = true;
+          set[key] = "true";
+          console.log(set);
+          userRef.set(set).then(() => {
+            this.props.circles.addCircle(key, title, desc, imageName);
+            this.setState({ redirect: true });
+          });
         });
     } else {
       console.log('error');
