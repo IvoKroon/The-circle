@@ -93,9 +93,8 @@ class CreateCircle extends React.Component {
           const { key } = data;
           const userRef = this.database.ref(`users/${this.userId}/circles`);
           const set = {};
+          // set[key] = true;
           set[key] = true;
-          set[key] = "true";
-          console.log(set);
           userRef.set(set).then(() => {
             this.props.circles.addCircle(key, title, desc, imageName);
             this.setState({ redirect: true });

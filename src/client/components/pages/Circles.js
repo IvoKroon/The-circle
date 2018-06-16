@@ -8,7 +8,6 @@ import CircleItemAdd from '../circle/CircleItemAdd';
 import CircleHolder from '../circle/CircleHolder';
 import { MainContainer } from '../general/GlobalCss';
 import Loader from '../general/Loader';
-import firebase from '../general/firebaseConfig';
 import { LoadCircles } from '../firebaseRequests/UserRequests';
 import { GetCirclesByCircleIds, CancelGetCirclesByCircleIds } from '../firebaseRequests/CircleRequests';
 
@@ -86,9 +85,6 @@ class Circles extends React.Component {
 
 // WE NEED THIS BECAUSE WE INJECT (wrappedComponent).
 Circles.wrappedComponent.propTypes = {
-  user: PropTypes.shape({
-    user: PropTypes.object.isRequired,
-  }).isRequired,
   circles: PropTypes.shape({
     circles: PropTypes.object.isRequired,
     addCircle: PropTypes.func.isRequired,

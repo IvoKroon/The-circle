@@ -9,6 +9,13 @@ import TitleStep from '../steps/createProduct/TitleStep';
 import ImageStep from '../steps/createProduct/ImageStep';
 import AddToCircleStep from '../steps/createProduct/AddToCircleStep';
 import { Random } from '../general/Functions';
+import { LoadCircles } from '../firebaseRequests/UserRequests';
+import { AddNewProduct } from '../firebaseRequests/ProductRequests';
+import {
+  GetCirclesByCircleIds,
+  CancelGetCirclesByCircleIds,
+  AddProductToCircle,
+} from '../firebaseRequests/CircleRequests';
 
 @inject('user', 'circles')
 @observer
@@ -29,21 +36,15 @@ export default class CreateProduct extends React.Component {
   }
   // WE NEED TO LOAD THE CIRCLES.
   componentDidMount() {
-    const { circles } = JSON.parse(localStorage.user);
-    const groupRef = firebase.database().ref('circles/');
-    const promises = [];
-    for (let i = 0; i < circles.length; i += 1) {
-      const promise = new Promise((resolve, reject) => {
-        groupRef.child(circles[i]).once('value', (snapshot) => {
-          console.log(snapshot.val());
-          const { title } = snapshot.val();
-          resolve({ id: circles[i], title, state: true });
+    LoadCircles().then((circlesIds) => {
+      GetCirclesByCircleIds(circlesIds).then((circles) => {
+        circles.map((data) => {
+          const newData = data;
+          newData.state = true;
+          return newData;
         });
+        this.setState({ circles });
       });
-      promises.push(promise);
-    }
-    Promise.all(promises).then((data) => {
-      this.setState({ circles: data });
     });
   }
 
@@ -75,34 +76,44 @@ export default class CreateProduct extends React.Component {
     if (this.state.title.length > 0) {
       const { title, desc } = this.state;
       const { id } = JSON.parse(localStorage.getItem('user'));
-      console.log(this.props.user);
-      const productRef = this.database.ref('products');
-      productRef
-        .push({
-          title,
-          desc,
-          userId: id,
-          image: url,
-        })
-        .then((data) => {
-          console.log(data.key);
-          // NOW WE NEED TO SET THIS KEY TO ALL THE SELECTED CIRLCES
-          // const
-          // const updates = {};
-          for (let i = 0; i < this.state.circles.length; i += 1) {
-            if (this.state.circles[i].state) {
-              const circleId = this.state.circles[i].id;
-              firebase
-                .database()
-                .ref(`circles/${circleId}/products`)
-                .push(data.key)
-                .then((error) => {
-                  console.log('DONE');
-                  console.log(error);
-                });
-            }
+      AddNewProduct(title, desc, url).then((data) => {
+        for (let i = 0; i < this.state.circles.length; i += 1) {
+          if (this.state.circles[i].state) {
+            const circleId = this.state.circles[i].id;
+            AddProductToCircle(circleId, data.key).then(() => {
+              console.log('DONE');
+            });
           }
-        });
+        }
+      });
+
+      // const productRef = this.database.ref('products');
+      // productRef
+      //   .push({
+      //     title,
+      //     desc,
+      //     userId: id,
+      //     image: url,
+      //   })
+      //   .then((data) => {
+      //     console.log(data.key);
+      //     // NOW WE NEED TO SET THIS KEY TO ALL THE SELECTED CIRLCES
+      //     // const
+      //     // const updates = {};
+      //     for (let i = 0; i < this.state.circles.length; i += 1) {
+      //       if (this.state.circles[i].state) {
+      //         const circleId = this.state.circles[i].id;
+      //         firebase
+      //           .database()
+      //           .ref(`circles/${circleId}/products`)
+      //           .push(data.key)
+      //           .then((error) => {
+      //             console.log('DONE');
+      //             console.log(error);
+      //           });
+      //       }
+      //     }
+      //   });
     } else {
       console.log('error');
     }

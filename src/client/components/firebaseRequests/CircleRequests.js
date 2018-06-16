@@ -20,9 +20,18 @@ export const GetCirclesByCircleIds = (circleIds) => {
       resolve(data);
     });
   });
-
   return promise;
 };
+
+export const AddProductToCircle = (circleKey, productKey) => {
+  const set = {};
+  set[productKey] = true;
+  return firebase
+    .database()
+    .ref(`circles/${circleKey}/products`)
+    .set(set);
+};
+
 export const CancelGetCirclesByCircleIds = () => {
   firebase
     .database()
@@ -30,4 +39,4 @@ export const CancelGetCirclesByCircleIds = () => {
     .off();
 };
 
-export default { GetCirclesByCircleIds, CancelGetCirclesByCircleIds };
+export default { AddProductToCircle, GetCirclesByCircleIds, CancelGetCirclesByCircleIds };

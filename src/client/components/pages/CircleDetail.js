@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { inject } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import styled, { css } from 'react-emotion';
 import { withRouter } from 'react-router-dom';
 
@@ -10,6 +10,8 @@ import Loader from '../general/Loader';
 import Notification from '../notification/Notification';
 import { Holder } from '../circle/CircleItemStyle';
 import ProductLoader from '../product/ProductLoader';
+
+import { UserHasCircle, UserJoinsCircle, UserLeavesCircle } from '../firebaseRequests/UserRequests';
 
 const NotificationHolder = styled.div`
   margin-top: 30px;
@@ -32,24 +34,41 @@ const Image = styled.img`
   max-height: 100%;
   object-fit: cover;
 `;
-@inject('user')
+
+@inject('user', 'circles')
+@observer
 class CircleDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
       circle: null,
+      prive: false,
+      joined: false,
     };
+    this.joinCircle = this.joinCircle.bind(this);
   }
 
   componentWillMount() {
     const { id } = this.props.match.params;
-    const messagesRef = firebase.database().ref(`circles/${id}`);
-
-    messagesRef.once('value', (snapshot) => {
-      if (snapshot.val() != null) {
-        const circle = snapshot.val();
-        this.setState({ circle, loading: false });
+    const circleRef = firebase.database().ref(`circles/${id}`);
+    circleRef.once('value', (circleData) => {
+      if (circleData.val() != null) {
+        const circle = circleData.val();
+        circle.key = circleData.key;
+        UserHasCircle(circleData.key).then((userHas) => {
+          let newState = this.state;
+          if (userHas && circle.status) {
+            newState = { prive: false, joined: true };
+          } else if (!userHas && !circle.status) {
+            newState = { prive: false, joined: false };
+          } else {
+            newState = { prive: true, joined: false };
+          }
+          newState.circle = circle;
+          newState.loading = false;
+          this.setState(newState);
+        });
       } else {
         this.props.history.push('/notfound');
       }
@@ -63,6 +82,23 @@ class CircleDetail extends React.Component {
       .ref(`circles/${id}`)
       .off();
   }
+
+  joinCircle() {
+    const { key } = this.state.circle;
+    const joined = !this.state.joined;
+    this.setState({ joined });
+    if (!joined) {
+      // First we set the mobx store and then we do the request.
+      // Firebase pipes the request so they will be set.
+      this.props.circles.findItemAndRemove(this.state.circle.key);
+      UserLeavesCircle(key).then(() => {});
+    } else {
+      const { title, desc, img } = this.state.circle;
+      this.props.circles.addCircle(key, title, desc, img);
+      UserJoinsCircle(key, joined).then(() => {});
+    }
+  }
+
   render() {
     let image = null;
     if (!this.state.loading) {
@@ -80,7 +116,7 @@ class CircleDetail extends React.Component {
           </HolderLeft>
           <HolderRight>
             <h1>{CapitalizeFirstLetter(this.state.circle.title)}</h1>
-            <button></button>
+            <button onClick={this.joinCircle}>{this.state.joined ? 'Leave' : 'Join'}</button>
             <p>
               <b>Sommelsdijk</b> Nicolaas beetsstraat 18
             </p>
@@ -116,10 +152,11 @@ CircleDetail.propTypes = {
 };
 
 CircleDetail.wrappedComponent.propTypes = {
-  user: PropTypes.shape({
-    user: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-    }),
+  circles: PropTypes.shape({
+    circles: PropTypes.object.isRequired,
+    addCircle: PropTypes.func.isRequired,
+    setCircle: PropTypes.func.isRequired,
+    findItemAndRemove: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -19,7 +19,7 @@ export default class ProductLoader extends React.Component {
   componentDidMount() {
     const promises = [];
     if (this.props.products) {
-      const arrayProducts = Object.values(this.props.products);
+      const arrayProducts = Object.keys(this.props.products);
       for (let i = 0; i < arrayProducts.length; i += 1) {
         const promise = new Promise((resolve) => {
           const id = arrayProducts[i];
