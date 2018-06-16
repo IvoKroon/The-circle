@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { css } from 'react-emotion';
 import ClosedArrowIcon from '../icons/ClosedArrowIcon';
 import { LightGrey } from '../general/GlobalCss';
 import TimeSlot from './TimeSlot';
+import { PlanProduct } from '../firebaseRequests/ProductRequests';
 
 const Holder = styled.div`
   width: 300px;
@@ -54,10 +56,14 @@ export default class TimePlanner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSlots: [0, 1],
-      takenSlots: [2, 3],
+      selectedSlots: [],
+      takenSlots: [],
     };
     this.setSelecter = this.setSelecter.bind(this);
+    this.plan = this.plan.bind(this);
+  }
+  componentDidMount() {
+    this.loadTimeSlots();
   }
   setSelecter(key) {
     const array = this.state.selectedSlots;
@@ -70,6 +76,59 @@ export default class TimePlanner extends React.Component {
     const data = this.state.selectedSlots;
     data.splice(deselect, 1);
     this.setState({ selectedSlots: data });
+  }
+
+  plan() {
+    const timeStamps = [];
+    for (let i = 0; i < this.state.selectedSlots.length; i += 1) {
+      const date = new Date();
+      const hour = date.getHours() + this.state.selectedSlots[i] + 1;
+      const day = date.getDay();
+      const newDate = new Date(date.getFullYear(), date.getMonth(), day, hour);
+      timeStamps.push(newDate.getTime());
+    }
+
+    PlanProduct(this.props.product.id, timeStamps).then(() => {
+      console.log('PLANNED');
+    });
+
+    // Save one to many
+    // product/$id/planned/
+    // Push timestamp -> userId
+  }
+
+  loadTimeSlots() {
+    // console.log(this.props.product.plan);
+    // const plan
+    if (this.props.product.plan) {
+      const plan = Object.keys(this.props.product.plan);
+      // const plan = [1528290000, 1528315200];
+      const slots = [];
+      for (let i = 0; i < plan.length; i += 1) {
+        const timestamp = plan[i];
+        const now = new Date();
+        const startHour = now.getHours() + 1;
+        const date = new Date(Number(timestamp));
+
+        if (date.getHours() < startHour) {
+          // NEXT DAY.
+          slots.push(24 - startHour + date.getHours());
+        } else {
+          console.log(date.getHours() - startHour);
+          slots.push(date.getHours() - startHour);
+        }
+      }
+      console.log(slots);
+      this.setState({ takenSlots: slots });
+    }
+
+    //
+
+    // const hours = 14;
+
+    // console.log(chosenHour);
+    // // const timeStamps = [];
+    // // if()
   }
 
   render() {
@@ -115,7 +174,11 @@ export default class TimePlanner extends React.Component {
           <Day>vr</Day>
         </DayHolder>
         <HourHolder>{timePlanner}</HourHolder>
+        <button onClick={this.plan}>PLAN</button>
       </Holder>
     );
   }
 }
+TimePlanner.propTypes = {
+  product: PropTypes.objectOf(PropTypes.any).isRequired,
+};

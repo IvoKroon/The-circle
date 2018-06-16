@@ -37,6 +37,7 @@ class ProductDetail extends React.Component {
     messagesRef.once('value', (snapshot) => {
       if (snapshot.val() != null) {
         const product = snapshot.val();
+        product.id = snapshot.key;
         this.setState({ product, loading: false });
       } else {
         this.props.history.push('/notfound');
@@ -71,7 +72,7 @@ class ProductDetail extends React.Component {
               <Location>
                 <b>Sommelsdijk</b> Nicolaas beetsstraat 18
               </Location>
-              <TimePlanner />
+              <TimePlanner product={this.state.product} />
             </SplitViewChild>
           </SplitView>
         ) : (
