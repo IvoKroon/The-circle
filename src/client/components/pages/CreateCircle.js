@@ -76,6 +76,7 @@ class CreateCircle extends React.Component {
   }
 
   createCircle(imageName) {
+    const userId = JSON.parse(localStorage.getItem('user')).id;
     if (this.state.title.length > 0) {
       const { title, desc, status } = this.state;
 
@@ -91,7 +92,7 @@ class CreateCircle extends React.Component {
           console.log(data);
           // ADD CIRCLE TO USER
           const { key } = data;
-          const userRef = this.database.ref(`users/${this.userId}/circles`);
+          const userRef = this.database.ref(`users/${userId}/circles`);
           const set = {};
           // set[key] = true;
           set[key] = true;

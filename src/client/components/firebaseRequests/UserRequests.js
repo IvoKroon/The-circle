@@ -7,10 +7,8 @@ export const LoadCircles = () => {
 
   const promise = new Promise((resolve) => {
     userRef.once('value', (snapshot) => {
-      console.log(snapshot.val());
       // Check if there are circle if there are we make an array of the object.
       const circles = snapshot.val().circles ? Object.keys(snapshot.val().circles) : [];
-      console.log(circles);
       resolve(circles);
     });
   });
@@ -35,7 +33,7 @@ export const UserJoinsCircle = (circleId) => {
   const userRef = firebase.database().ref(`users/${userId}/circles`);
   const set = {};
   set[circleId] = true;
-  return userRef.set(set);
+  return userRef.update(set);
 };
 
 export const UserLeavesCircle = (circleId) => {
