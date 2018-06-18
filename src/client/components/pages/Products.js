@@ -3,6 +3,10 @@ import { MainContainer } from '../general/GlobalCss';
 import TimePlanner from '../planner/TimePlanner';
 import Loader from '../general/Loader';
 import firebase from '../general/firebaseConfig';
+import {
+  CreateNotification,
+  GetLatestNotifications,
+} from '../firebaseRequests/NotificationRequests';
 
 class Products extends React.Component {
   constructor(props) {
@@ -31,11 +35,14 @@ class Products extends React.Component {
   //   });
   // }
   render() {
-    return (
-      <MainContainer>
-        <TimePlanner />
-      </MainContainer>
-    );
+    const userId = JSON.parse(localStorage.getItem('user')).id;
+    // CreateNotification('-LF2X5i3P8f7jZflw4Jy', userId).then(() => {
+    //   console.log('added');
+    // });
+    GetLatestNotifications(userId).then((data) => {
+      console.log(data);
+    });
+    return <MainContainer />;
   }
 }
 

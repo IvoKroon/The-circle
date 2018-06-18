@@ -6,6 +6,8 @@ import RequestNotification from '../notification/RequestNotification';
 import SearchBar from '../form/SearchBar';
 import { Title } from '../general/Headers';
 import { MainContainer, Grey } from '../general/GlobalCss';
+import { GetLatestNotifications } from '../firebaseRequests/NotificationRequests';
+import NotificationLoader from '../notification/NotificationLoader';
 
 const RequestNotificationHolder = styled.div`
   display: flex;
@@ -45,20 +47,7 @@ const Home = () => (
       </HeaderData>
     </HeaderHolder>
     <MainContainer>
-      <RequestNotificationHolder>
-        <RequestNotification
-          acceptAction={() => console.log('Accepting')}
-          declineAction={() => console.log('Declining')}
-          user="Ivo"
-          item="Landmower"
-        />
-        <RequestNotification
-          acceptAction={() => console.log('Accepting')}
-          declineAction={() => console.log('Declining')}
-          user="Ivo"
-          item="Landmower"
-        />
-      </RequestNotificationHolder>
+      <NotificationLoader />
     </MainContainer>
   </div>
 );

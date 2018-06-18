@@ -42,6 +42,15 @@ export const UserLeavesCircle = (circleId) => {
   return userRef.remove();
 };
 
+export const GetUserById = (userId) => {
+  const userRef = firebase.database().ref(`users/${userId}`);
+  return userRef.once('value');
+};
+
 export default {
-  LoadCircles, UserHasCircle, UserJoinsCircle, UserLeavesCircle,
+  LoadCircles,
+  UserHasCircle,
+  UserJoinsCircle,
+  UserLeavesCircle,
+  GetUserById,
 };

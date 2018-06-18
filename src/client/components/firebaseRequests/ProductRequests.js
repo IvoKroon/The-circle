@@ -15,13 +15,13 @@ export const AddNewProduct = (title, desc, image) => {
 };
 
 // ADD plan to product.
-export const PlanProduct = (productId, moments) => {
+export const PlanProduct = (productId, moments, state) => {
   const userId = JSON.parse(localStorage.getItem('user')).id;
   const productRef = firebase.database().ref(`products/${productId}/plan/`);
   const updates = {};
   console.log(moments);
   for (let i = 0; i < moments.length; i += 1) {
-    updates[moments[i]] = userId;
+    updates[moments[i]] = { userId, state };
   }
   console.log('UPDATES');
   console.log(updates);
@@ -31,4 +31,9 @@ export const PlanProduct = (productId, moments) => {
   // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
 };
 
-export default { AddNewProduct, PlanProduct };
+export const GetProductById = (productId) => {
+  const ref = firebase.database().ref(`products/${productId}`);
+  return ref.once('value');
+};
+
+export default { AddNewProduct, PlanProduct, GetProductById };

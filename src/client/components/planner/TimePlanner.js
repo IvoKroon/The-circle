@@ -5,6 +5,7 @@ import ClosedArrowIcon from '../icons/ClosedArrowIcon';
 import { LightGrey } from '../general/GlobalCss';
 import TimeSlot from './TimeSlot';
 import { PlanProduct } from '../firebaseRequests/ProductRequests';
+import { CreateNotification } from '../firebaseRequests/NotificationRequests';
 
 const Holder = styled.div`
   width: 300px;
@@ -87,10 +88,25 @@ export default class TimePlanner extends React.Component {
       const newDate = new Date(date.getFullYear(), date.getMonth(), day, hour);
       timeStamps.push(newDate.getTime());
     }
+    const userId = JSON.parse(localStorage.getItem('user')).id;
+    console.log(this.props.product.userId);
+    console.log(userId);
 
-    PlanProduct(this.props.product.id, timeStamps).then(() => {
-      console.log('PLANNED');
-    });
+    if (Number(this.props.product.userId) === Number(userId)) {
+      PlanProduct(this.props.product.id, timeStamps, 0).then(() => {
+        console.log('PLANNED');
+      });
+    } else {
+      console.log('not your product');
+      // Create notification
+      PlanProduct(this.props.product.id, timeStamps, 1).then(() => {
+        CreateNotification(this.props.product.id, userId, timeStamps).then((data) => {
+          console.log('Send notification');
+          console.log(data);
+        });
+        console.log('PLANNED');
+      });
+    }
 
     // Save one to many
     // product/$id/planned/
@@ -114,11 +130,11 @@ export default class TimePlanner extends React.Component {
           // NEXT DAY.
           slots.push(24 - startHour + date.getHours());
         } else {
-          console.log(date.getHours() - startHour);
+          // console.log(date.getHours() - startHour);
           slots.push(date.getHours() - startHour);
         }
       }
-      console.log(slots);
+      // console.log(slots);
       this.setState({ takenSlots: slots });
     }
 
@@ -132,6 +148,7 @@ export default class TimePlanner extends React.Component {
   }
 
   render() {
+    // console.log('Product : ', this.props.product);
     const d = new Date();
     const hour = d.getHours() + 1;
     const timePlanner = [];
