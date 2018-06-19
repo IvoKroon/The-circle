@@ -9,7 +9,6 @@ import { MainContainer, Grey } from '../general/GlobalCss';
 import { GetLatestNotifications } from '../firebaseRequests/NotificationRequests';
 import NotificationLoader from '../notification/NotificationLoader';
 import firebase from '../general/firebaseConfig';
-import { PromiseObservable } from 'rxjs/observable/PromiseObservable';
 
 const ProductHolder = styled.div`
   display: flex;
@@ -19,6 +18,8 @@ const ProductHolder = styled.div`
 const Header = styled.img`
   min-width: 100%;
   height: 350px;
+  object-fit: cover;
+
 `;
 
 const HeaderHolder = styled.div`
@@ -108,7 +109,7 @@ export default class Home extends React.Component {
     return (
       <div>
         <HeaderHolder>
-          <Header src="../images/img.png" />
+          <Header src="https://firebasestorage.googleapis.com/v0/b/circle-2252a.appspot.com/o/landmower.jpg?alt=media&token=9713a7e1-bb0e-44fd-b551-d00d7c5526a5" />
           <HeaderData>
             <SearchBar
               placeholder="Search for a product..."
