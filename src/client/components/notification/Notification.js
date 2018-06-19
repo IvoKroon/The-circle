@@ -30,16 +30,18 @@ const Name = styled.div`
   font-weight: bold;
 `;
 const Strong = styled.strong`
-  color:black;
+  color: black;
 `;
 
 const Message = styled.div`
   color: ${Grey};
 `;
 
-const Notification = ({ item, name, type }) => {
+const Notification = ({
+  item, name, type, price,
+}) => {
   let text = '';
-  if (type === 'Searching') {
+  if (type === 2) {
     text = (
       <Message>
         is <Strong>Searching</Strong> for a <Strong>{item}</Strong>
@@ -49,6 +51,12 @@ const Notification = ({ item, name, type }) => {
     text = (
       <Message>
         just <Strong>Lent</Strong> a <Strong>{item}</Strong>
+      </Message>
+    );
+  } else if (type === 1) {
+    text = (
+      <Message>
+        asks to buy together a <Strong>{item}</Strong> coast <Strong>€{price}</Strong>
       </Message>
     );
   }
@@ -72,7 +80,12 @@ const Notification = ({ item, name, type }) => {
 Notification.propTypes = {
   item: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.number.isRequired,
+  price: PropTypes.number,
+};
+
+Notification.defaultProps = {
+  price: 0,
 };
 
 export default Notification;

@@ -17,6 +17,7 @@ import {
   AddProductToCircle,
 } from '../firebaseRequests/CircleRequests';
 import Loader from '../general/Loader';
+import { Redirect } from 'react-router-dom';
 
 @inject('user', 'circles')
 @observer
@@ -31,6 +32,7 @@ export default class CreateProduct extends React.Component {
       imageSrc: null,
       circles: [],
       loading: false,
+      redirect: false,
     };
     this.title = '';
     this.database = firebase.database();
@@ -104,6 +106,7 @@ export default class CreateProduct extends React.Component {
                 })
                 .then(() => {
                   console.log('DONE');
+                  this.setState({ redirect: true });
                 });
             }
           }
@@ -116,6 +119,9 @@ export default class CreateProduct extends React.Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to="/products/" />;
+    }
     return (
       <MainContainer>
         {this.state.loading ? (

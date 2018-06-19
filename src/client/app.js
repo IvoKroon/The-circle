@@ -14,6 +14,8 @@ import Account from './components/pages/Account';
 import Products from './components/pages/Products';
 import ProductDetail from './components/pages/ProductDetail';
 import CreateProduct from './components/pages/CreateProduct';
+import CreateBuyRequest from './components/pages/CreateBuyRequest';
+import PayBuyRequest from './components/pages/PayBuyRequest';
 
 import Circles from './components/pages/Circles';
 import CircleDetail from './components/pages/CircleDetail';
@@ -123,6 +125,8 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/account" component={Account} />
+              <Route path="/createbuyrequest/:id" component={CreateBuyRequest} />
+              <Route path="/paybuyrequest/:circleid/:id" component={PayBuyRequest} />
               <Route path="/createcircle" component={CreateCircle} />
               <Route path="/circle/:id" component={CircleDetail} />
               <Route path="/circles" component={Circles} />

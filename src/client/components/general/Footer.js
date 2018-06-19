@@ -12,6 +12,6 @@ const Container = styled.div`
   color: white;
 `;
 
-const Footer = () => <Container>Footer</Container>;
+const Footer = () => <Container />;
 
 export default Footer;

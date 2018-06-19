@@ -49,7 +49,7 @@ const SearchBar = ({
     <Holder>
       <TextField shadow={shadow} onChange={e => onChange(e)} placeholder={placeholder} />
       <SearchButton shadow={shadow} onClick={onClick}>
-        Zoeken
+        Search
       </SearchButton>
     </Holder>
   </Container>

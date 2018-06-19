@@ -6,6 +6,7 @@ import { LightGrey } from '../general/GlobalCss';
 import TimeSlot from './TimeSlot';
 import { PlanProduct } from '../firebaseRequests/ProductRequests';
 import { CreateNotification } from '../firebaseRequests/NotificationRequests';
+import { Redirect } from 'react-router-dom';
 
 const Holder = styled.div`
   width: 300px;
@@ -59,6 +60,7 @@ export default class TimePlanner extends React.Component {
     this.state = {
       selectedSlots: [],
       takenSlots: [],
+      redirect: false,
     };
     this.setSelecter = this.setSelecter.bind(this);
     this.plan = this.plan.bind(this);
@@ -89,22 +91,18 @@ export default class TimePlanner extends React.Component {
       timeStamps.push(newDate.getTime());
     }
     const userId = JSON.parse(localStorage.getItem('user')).id;
-    console.log(this.props.product.userId);
-    console.log(userId);
 
     if (Number(this.props.product.userId) === Number(userId)) {
       PlanProduct(this.props.product.id, timeStamps, 0).then(() => {
-        console.log('PLANNED');
+        this.setState({ redirect: true });
       });
     } else {
-      console.log('not your product');
       // Create notification
       PlanProduct(this.props.product.id, timeStamps, 1).then(() => {
         CreateNotification(this.props.product.id, userId, timeStamps).then((data) => {
-          console.log('Send notification');
-          console.log(data);
+          this.setState({ redirect: true });
         });
-        console.log('PLANNED');
+        // this.setState({ redirect: true });
       });
     }
 
@@ -148,7 +146,9 @@ export default class TimePlanner extends React.Component {
   }
 
   render() {
-    // console.log('Product : ', this.props.product);
+    if (this.state.redirect) {
+      return <Redirect to="/products/" />;
+    }
     const d = new Date();
     const hour = d.getHours() + 1;
     const timePlanner = [];

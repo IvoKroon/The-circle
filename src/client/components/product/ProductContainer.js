@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 const Container = styled('div')`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 export default class ProductContainer extends Component {

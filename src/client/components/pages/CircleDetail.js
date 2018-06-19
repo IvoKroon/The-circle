@@ -12,6 +12,7 @@ import { Holder } from '../circle/CircleItemStyle';
 import ProductLoader from '../product/ProductLoader';
 
 import { UserHasCircle, UserJoinsCircle, UserLeavesCircle } from '../firebaseRequests/UserRequests';
+import Button from '../form/Button';
 
 const NotificationHolder = styled.div`
   margin-top: 30px;
@@ -107,13 +108,24 @@ class CircleDetail extends React.Component {
     if (!this.state.loading) {
       image = <Image width="250" height="250" src={this.state.circle.img} />;
       if (this.state.circle.requests) {
-        // console.log(this.state.circle.requests);
-        console.log('test');
         const requests = Object.values(this.state.circle.requests);
+        const keys = Object.keys(this.state.circle.requests);
         for (let i = 0; i < requests.length; i += 1) {
           const request = requests[i];
-          notifications.push(<Link key={i} to="/createproduct">
-            <Notification name="Ivo" type="Searching" item={request.title} />
+          notifications.push(<Link
+            key={i}
+            to={
+                request.state === 1
+                  ? `/paybuyrequest/${this.state.circle.key}/${keys[i]}`
+                  : '/createproduct'
+              }
+          >
+            <Notification
+              name="Ivo"
+              price={request.state === 1 ? request.pricePerPerson : 0}
+              type={request.state}
+              item={request.title}
+            />
                              </Link>);
         }
       }
@@ -142,9 +154,14 @@ class CircleDetail extends React.Component {
         </Container>
         <h1>Producten</h1>
         {this.state.joined ? (
-          <Link to={`/requestproduct/${this.state.circle.key}`}>
-            <button>Verzoek product</button>
-          </Link>
+          <div>
+            <Link to={`/requestproduct/${this.state.circle.key}`}>
+              <Button>Ask for product</Button>
+            </Link>
+            <Link to={`/createbuyrequest/${this.state.circle.key}`}>
+              <Button>Create buy request</Button>
+            </Link>
+          </div>
         ) : null}
         <div>
           <ProductLoader circleId={id} products={this.state.circle.products} />
