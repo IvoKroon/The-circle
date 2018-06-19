@@ -23,14 +23,11 @@ export const GetCirclesByCircleIds = (circleIds) => {
   return promise;
 };
 
-export const AddProductToCircle = (circleKey, productKey) => {
-  const set = {};
-  set[productKey] = true;
-  return firebase
+export const AddProductToCircle = (circleKey, product) =>
+  firebase
     .database()
     .ref(`circles/${circleKey}/products`)
-    .set(set);
-};
+    .push(product);
 
 export const CancelGetCirclesByCircleIds = () => {
   firebase

@@ -56,15 +56,13 @@ const NoMatch = () => (
   </div>
 );
 const removeUser = () => {
-  console.log('REMOVING');
   localStorage.removeItem('user');
 };
 
 const LoadUser = () => {
-  const id = 2;
+  const id = 1;
   const messagesRef = firebase.database().ref(`users/${id}`);
   messagesRef.once('value', (snapshot) => {
-    console.log('LOADING USER', snapshot.val());
     const { firstname, lastname } = snapshot.val();
     const circles = snapshot.val().circles ? snapshot.val().circles : [];
     const circlesArray = Object.values(circles);

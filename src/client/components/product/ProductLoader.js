@@ -12,31 +12,28 @@ export default class ProductLoader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      loading: true,
       products: [],
     };
   }
   componentDidMount() {
-    const promises = [];
-    if (this.props.products) {
-      const arrayProducts = Object.keys(this.props.products);
-      for (let i = 0; i < arrayProducts.length; i += 1) {
-        const promise = new Promise((resolve) => {
-          const id = arrayProducts[i];
-          const messagesRef = firebase.database().ref(`products/${id}`);
+    if (this.props.circleId) {
+      const ref = firebase.database().ref(`circles/${this.props.circleId}/products`);
 
-          messagesRef.once('value', (snapshot) => {
-            const data = snapshot.val();
-            data.id = id;
-            resolve(data);
-          });
+      ref.once('value', (snapshot) => {
+        const data = snapshot.val();
+        const products = Object.values(data);
+        const keys = Object.keys(data);
+
+        products.map((product, key) => {
+          const newProduct = product;
+          newProduct.id = keys[key];
+          return newProduct;
         });
 
-        promises.push(promise);
-      }
-
-      Promise.all(promises).then((values) => {
-        this.setState({ products: values });
+        this.setState({ products, loading: false });
+        console.log(data);
+        // data.id = id;
       });
     }
   }
@@ -46,16 +43,14 @@ export default class ProductLoader extends React.Component {
     if (!this.loading) {
       for (let i = 0; i < this.state.products.length; i += 1) {
         const { id, title, image } = this.state.products[i];
-        components.push(<Link key={i} to={`/products/${id}`}>
-          <ProductView title={title} image={image} />
-                        </Link>);
+        components.push(<ProductView key={i} id={id} title={title} image={image} />);
       }
     }
     return (
       <MainContainer>
         {!this.state.loading ? (
           <ProductContainer>
-            {this.props.products ? (
+            {this.props.circleId ? (
               components
             ) : (
               <div>
@@ -73,8 +68,8 @@ export default class ProductLoader extends React.Component {
 }
 
 ProductLoader.propTypes = {
-  products: PropTypes.objectOf(PropTypes.any.isRequired),
+  circleId: PropTypes.string,
 };
 ProductLoader.defaultProps = {
-  products: null,
+  circleId: null,
 };

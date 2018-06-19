@@ -76,48 +76,82 @@ export default class CreateProduct extends React.Component {
     if (this.state.title.length > 0) {
       const { title, desc } = this.state;
       const { id } = JSON.parse(localStorage.getItem('user'));
-      AddNewProduct(title, desc, url).then((data) => {
-        for (let i = 0; i < this.state.circles.length; i += 1) {
-          if (this.state.circles[i].state) {
-            const circleId = this.state.circles[i].id;
-            AddProductToCircle(circleId, data.key).then(() => {
-              console.log('DONE');
-            });
+      // AddNewProduct(title, desc, url, this.state.circles).then((data) => {
+      const productSet = {
+        title,
+        desc,
+        userId: id,
+        image: url,
+      };
+      firebase
+        .database()
+        .ref('products')
+        .push(productSet)
+        .then((data) => {
+          console.log(data.key);
+          for (let i = 0; i < this.state.circles.length; i += 1) {
+            if (this.state.circles[i].state) {
+              const circleId = this.state.circles[i].id;
+              firebase
+                .database()
+                .ref(`circles/${circleId}/products/${data.key}`)
+                .update({
+                  title,
+                  desc,
+                  userId: id,
+                  image: url,
+                })
+                .then(() => {
+                  console.log('DONE');
+                });
+            }
           }
-        }
-      });
+        });
 
-      // const productRef = this.database.ref('products');
-      // productRef
-      //   .push({
-      //     title,
-      //     desc,
-      //     userId: id,
-      //     image: url,
-      //   })
+      // firebase
+      //   .database()
+      //   .ref('products')
+      //   .set(productSet)
       //   .then((data) => {
-      //     console.log(data.key);
-      //     // NOW WE NEED TO SET THIS KEY TO ALL THE SELECTED CIRLCES
-      //     // const
-      //     // const updates = {};
-      //     for (let i = 0; i < this.state.circles.length; i += 1) {
-      //       if (this.state.circles[i].state) {
-      //         const circleId = this.state.circles[i].id;
-      //         firebase
-      //           .database()
-      //           .ref(`circles/${circleId}/products`)
-      //           .push(data.key)
-      //           .then((error) => {
-      //             console.log('DONE');
-      //             console.log(error);
-      //           });
-      //       }
-      //     }
+      //     console.log(done);
       //   });
-    } else {
-      console.log('error');
     }
   }
+  // }
+  // });
+
+  // const productRef = this.database.ref('products');
+  // productRef
+  //   .push({
+  //     title,
+  //     desc,
+  //     userId: id,
+  //     image: url,
+  //   })
+  //   .then((data) => {
+  //     console.log(data.key);
+  //     // NOW WE NEED TO SET THIS KEY TO ALL THE SELECTED CIRLCES
+  //     // const
+  //     // const updates = {};
+  //     for (let i = 0; i < this.state.circles.length; i += 1) {
+  //       if (this.state.circles[i].state) {
+  //         const circleId = this.state.circles[i].id;
+  //         firebase
+  //           .database()
+  //           .ref(`circles/${circleId}/products`)
+  //           .push(data.key)
+  //           .then((error) => {
+  //             console.log('DONE');
+  //             console.log(error);
+  //           });
+  //       }
+  //     }
+  //   });
+  //     } else {
+  //       console.log('error');
+  //     }
+  //   }
+  // }
 
   changeTitle(e) {
     this.setState({ title: e.target.value });

@@ -23,18 +23,15 @@ export default class NotificationLoader extends React.Component {
     this.updateNotification = this.updateNotification.bind(this);
   }
   componentDidMount() {
-    console.log('LOADING');
     const userId = JSON.parse(localStorage.getItem('user')).id;
     GetLatestNotifications(userId).then((data) => {
       if (data) {
-        console.log('NOTIFICATIONS!');
         this.setState({ loading: false, notifications: data });
       }
       this.setState({ loading: false });
     });
   }
   updateNotification(notificationId, state, key) {
-    console.log(this.state.notifications);
     // UpdateNotification
     UpdateNotification(notificationId, state).then((data) => {
       RemoveNotification(notificationId).then(() => {
@@ -54,7 +51,6 @@ export default class NotificationLoader extends React.Component {
     });
   }
   render() {
-    console.log(this.state.notifications);
     const components = [];
     if (!this.state.loading && this.state.notifications.length !== 0) {
       for (let i = 0; i < this.state.notifications.length; i += 1) {

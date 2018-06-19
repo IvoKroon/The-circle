@@ -98,8 +98,12 @@ class CircleDetail extends React.Component {
       UserJoinsCircle(key, joined).then(() => {});
     }
   }
+  requestProduct() {
+    console.log(this.state.circle.key);
+  }
 
   render() {
+    const { id } = this.props.match.params;
     let image = null;
     if (!this.state.loading) {
       image = <Image width="250" height="250" src={this.state.circle.img} />;
@@ -128,8 +132,11 @@ class CircleDetail extends React.Component {
           </HolderRight>
         </Container>
         <h1>Producten</h1>
+        {this.state.joined ? (
+          <button onClick={() => this.requestProduct()}>Verzoek product</button>
+        ) : null}
         <div>
-          <ProductLoader products={this.state.circle.products} />
+          <ProductLoader circleId={id} products={this.state.circle.products} />
         </div>
       </MainContainer>
     ) : (

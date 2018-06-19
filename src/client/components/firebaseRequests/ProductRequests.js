@@ -1,7 +1,7 @@
 import firebase from '../general/firebaseConfig';
 
 // Get the circles from the user.
-export const AddNewProduct = (title, desc, image) => {
+export const AddNewProduct = (title, desc, image, circles) => {
   const userId = JSON.parse(localStorage.getItem('user')).id;
 
   const productRef = firebase.database().ref('products');
@@ -10,6 +10,7 @@ export const AddNewProduct = (title, desc, image) => {
     desc,
     userId,
     image,
+    circles,
   });
   return action;
 };

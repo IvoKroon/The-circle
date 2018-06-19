@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import { MainColor } from '../general/GlobalCss';
+import { MainColor, Shadow } from '../general/GlobalCss';
 
 const Holder = styled.div`
   margin-left: auto;
@@ -28,6 +28,7 @@ const SearchButton = styled.button`
   height: 50px;
   background: ${MainColor};
   color: white;
+  ${props => (props.shadow ? Shadow : null)};
 `;
 
 const TextField = styled.input`
@@ -38,13 +39,18 @@ const TextField = styled.input`
   border-radius: 8px 0 0 8px;
   padding-left: 10px;
   font-size: 18px;
+  ${props => (props.shadow ? Shadow : null)};
 `;
 
-const SearchBar = ({ onClick, onChange }) => (
+const SearchBar = ({
+  shadow, onClick, onChange, placeholder,
+}) => (
   <Container>
     <Holder>
-      <TextField onChange={e => onChange(e)} placeholder="Ik ben opzoek naar..." type="text" />
-      <SearchButton onClick={onClick}>Zoeken</SearchButton>
+      <TextField shadow={shadow} onChange={e => onChange(e)} placeholder={placeholder} />
+      <SearchButton shadow={shadow} onClick={onClick}>
+        Zoeken
+      </SearchButton>
     </Holder>
   </Container>
 );
@@ -52,6 +58,12 @@ const SearchBar = ({ onClick, onChange }) => (
 SearchBar.propTypes = {
   onClick: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  shadow: PropTypes.bool,
+  placeholder: PropTypes.string.isRequired,
+};
+
+SearchBar.defaultProps = {
+  shadow: true,
 };
 
 export default SearchBar;

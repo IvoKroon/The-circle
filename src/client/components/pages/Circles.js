@@ -1,23 +1,35 @@
 import React from 'react';
+import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { observer, inject } from 'mobx-react';
 
+import firebase from '../general/firebaseConfig';
+import SearchBar from '../form/SearchBar';
 import CircleItem from '../circle/CircleItem';
 import CircleItemAdd from '../circle/CircleItemAdd';
 import CircleHolder from '../circle/CircleHolder';
 import { MainContainer } from '../general/GlobalCss';
 import Loader from '../general/Loader';
 import { LoadCircles } from '../firebaseRequests/UserRequests';
-import { GetCirclesByCircleIds, CancelGetCirclesByCircleIds } from '../firebaseRequests/CircleRequests';
+import {
+  GetCirclesByCircleIds,
+  CancelGetCirclesByCircleIds,
+} from '../firebaseRequests/CircleRequests';
+
+const SearchBarHolder = styled.div`
+  height: 100px;
+  width: 100%;
+`;
 
 @inject('user', 'circles')
 @observer
 class Circles extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loading: true, hasCircles: false };
+    this.state = { loading: true, hasCircles: false, results: [] };
     this.loading = true;
+    this.searchTerm = '';
   }
 
   componentWillMount() {
@@ -43,8 +55,34 @@ class Circles extends React.Component {
   componentWillUnmount() {
     CancelGetCirclesByCircleIds();
   }
+  search() {
+    firebase
+      .database()
+      .ref('circles')
+      .orderByChild('title')
+      .equalTo(this.searchTerm)
+      .once('value')
+      .then((circles) => {
+        if (circles.val() !== null) {
+          console.log(circles.val());
+          const keys = Object.keys(circles.val());
+          const values = Object.values(circles.val());
+
+          values.map((circle, key) => {
+            const newCircle = circle;
+            newCircle.id = keys[key];
+            return newCircle;
+          });
+          console.log(values);
+          this.setState({ results: values });
+        } else {
+          console.log('NOT FOUND');
+        }
+      });
+  }
 
   render() {
+    const searchResults = [];
     let component = null;
     if (!this.state.loading && this.state.hasCircles) {
       const data = [];
@@ -70,8 +108,8 @@ class Circles extends React.Component {
     } else {
       component = (
         <div>
-          <h1>No circles found.</h1>
-          <p>You can join or create one.</p>
+          <h1>Let's find some circles</h1>
+          <p>Or you can just create one!</p>
           <Link to="createcircle">
             <CircleItemAdd title="+ add Circle" />
           </Link>
@@ -79,7 +117,33 @@ class Circles extends React.Component {
       );
     }
 
-    return <MainContainer>{!this.state.loading ? component : <Loader />}</MainContainer>;
+    if (this.state.results.length !== 0) {
+      for (let i = 0; i < this.state.results.length; i += 1) {
+        const circleData = this.state.results[i];
+        searchResults.push(<Link key={circleData.id} to={`/circle/${circleData.id}`}>
+          <CircleItem title={circleData.title} imageSrc={circleData.img}>
+            {this.state.results[i].title}
+          </CircleItem>
+                           </Link>);
+      }
+    }
+
+    return (
+      <MainContainer>
+        <SearchBarHolder>
+          <SearchBar
+            placeholder="Find a circle..."
+            onClick={() => this.search()}
+            onChange={(e) => {
+              this.searchTerm = e.target.value;
+            }}
+          />
+        </SearchBarHolder>
+        <CircleHolder>{searchResults}</CircleHolder>
+
+        {!this.state.loading ? component : <Loader />}
+      </MainContainer>
+    );
   }
 }
 
