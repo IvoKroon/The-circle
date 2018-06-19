@@ -12,7 +12,7 @@ const HeaderContainer = styled('div')`
 `;
 const Image = styled.img`
   margin-right: 20px;
-  cursor:poiner;
+  cursor: poiner;
 `;
 const ListItem = styled('li')`
   display: inline-block;
@@ -49,8 +49,7 @@ const Header = () => (
         width="60"
         height="60"
         alt="Circle logo"
-        src="https://firebasestorage.googleapis.com/v0/b/circle-2252a.appspot.com/o/logo2.png?alt=media&token=06dc3249-c357-4f8c-86b7-2d01eec27f4d"
-      />
+        src="https://firebasestorage.googleapis.com/v0/b/circle-2252a.appspot.com/o/logobigger.png?alt=media&token=92772282-ff97-4973-90b1-1ec0ec9d945a" />
     </Link>
     <List>
       <Link to="/">
@@ -61,9 +60,6 @@ const Header = () => (
       </Link>
       <Link to="/products">
         <ListItem>Products</ListItem>
-      </Link>
-      <Link to="/account">
-        <ListItem>Account</ListItem>
       </Link>
     </List>
   </HeaderContainer>
