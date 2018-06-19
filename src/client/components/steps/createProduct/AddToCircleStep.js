@@ -1,6 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'react-emotion';
 
+const Holder = styled.div`
+  width: 250px;
+`;
+
+const Desc = styled.div`
+  margin-top: 10px;
+`;
+
+const CheckboxHolder = styled.div`
+  margin-top: 20px;
+`;
+
+const Header = styled.h1`
+  text-align: center;
+`;
+const CheckBox = styled.input`
+  background: red;
+`;
 class AddToCircleStep extends React.Component {
   constructor(props) {
     super(props);
@@ -30,33 +49,28 @@ class AddToCircleStep extends React.Component {
     const items = [];
     for (let i = 0; i < this.props.circles.length; i += 1) {
       const item = (
-        <div key={0}>
-          {this.props.circles[i].title}
-          <input
+        <div key={i}>
+          <CheckBox
             onChange={() => this.changeButton(i)}
             type="checkbox"
             checked={this.props.circles[i].state}
           />
+          {this.props.circles[i].title}
         </div>
       );
       items.push(item);
     }
     return (
-      <div>
-        <h1>Title toevoegen</h1>
-        <p>Wat voor instellingen moeten wij de Circle geven?</p>
-        <div>
-          check box all
+      <Holder>
+        <Header>Create product</Header>
+        <Desc>To what groups would you like to add this product?</Desc>
+        <CheckboxHolder>
           <div>
-            Alles<input
-              onChange={() => this.changeAll()}
-              type="checkbox"
-              checked={this.state.all}
-            />
+            <input onChange={() => this.changeAll()} type="checkbox" checked={this.state.all} />All
             {items}
           </div>
-        </div>
-      </div>
+        </CheckboxHolder>
+      </Holder>
     );
   }
 }

@@ -8,6 +8,13 @@ import firebase from '../../general/firebaseConfig';
 const ImageField = styled.input`
   display: none;
 `;
+const ImageButtonHolder = styled.div`
+margin-top:20px;
+  width:150px;
+  height:150px;
+  margin-left:auto;
+  margin-right:auto;
+`;
 
 class ImageStep extends React.Component {
   constructor(props) {
@@ -22,14 +29,15 @@ class ImageStep extends React.Component {
   render() {
     return (
       <div>
-        <h1>Step 2 - image</h1>
-        <p>Voeg een plaatje toe om de groep beter te herkennen</p>
-
-        <AddImageToCircle
-          src={this.props.image}
-          onClick={() => this.imageLoader.click()}
-          title="Add image"
-        />
+        <h1>Create Circle</h1>
+        <p>Add a recognizable picture</p>
+        <ImageButtonHolder>
+          <AddImageToCircle
+            src={this.props.image}
+            onClick={() => this.imageLoader.click()}
+            title="Add image"
+          />
+        </ImageButtonHolder>
         <ImageField
           id="imageUploader"
           alt="test"

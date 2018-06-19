@@ -19,6 +19,8 @@ const Holder = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   flex: 1;
+  margin-top:20px;
+
 `;
 
 const Filler = styled.div`

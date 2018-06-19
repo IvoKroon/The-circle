@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import styled, { css } from 'react-emotion';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import firebase from '../general/firebaseConfig';
 import { MainContainer, CapitalizeFirstLetter } from '../general/GlobalCss';
@@ -57,13 +57,14 @@ class CircleDetail extends React.Component {
         const circle = circleData.val();
         circle.key = circleData.key;
         UserHasCircle(circleData.key).then((userHas) => {
+          console.log(userHas);
           let newState = this.state;
           if (userHas && circle.status) {
             newState = { prive: false, joined: true };
           } else if (!userHas && !circle.status) {
             newState = { prive: false, joined: false };
           } else {
-            newState = { prive: true, joined: false };
+            newState = { prive: true, joined: true };
           }
           newState.circle = circle;
           newState.loading = false;
@@ -98,16 +99,26 @@ class CircleDetail extends React.Component {
       UserJoinsCircle(key, joined).then(() => {});
     }
   }
-  requestProduct() {
-    console.log(this.state.circle.key);
-  }
 
   render() {
     const { id } = this.props.match.params;
     let image = null;
+    const notifications = [];
     if (!this.state.loading) {
       image = <Image width="250" height="250" src={this.state.circle.img} />;
+      if (this.state.circle.requests) {
+        // console.log(this.state.circle.requests);
+        console.log('test');
+        const requests = Object.values(this.state.circle.requests);
+        for (let i = 0; i < requests.length; i += 1) {
+          const request = requests[i];
+          notifications.push(<Link key={i} to="/createproduct">
+            <Notification name="Ivo" type="Searching" item={request.title} />
+                             </Link>);
+        }
+      }
     }
+
     return !this.state.loading ? (
       <MainContainer>
         <Container>
@@ -125,15 +136,15 @@ class CircleDetail extends React.Component {
               <b>Sommelsdijk</b> Nicolaas beetsstraat 18
             </p>
             <NotificationHolder>
-              <Notification name="Ivo" type="Searching" item="Skrews" />
-              <Notification name="Ivo" type="Searching" item="Skrews" />
-              <Notification name="Ivo" type="Searching" item="Skrews" />
+              {this.state.circle.requests ? notifications : null}
             </NotificationHolder>
           </HolderRight>
         </Container>
         <h1>Producten</h1>
         {this.state.joined ? (
-          <button onClick={() => this.requestProduct()}>Verzoek product</button>
+          <Link to={`/requestproduct/${this.state.circle.key}`}>
+            <button>Verzoek product</button>
+          </Link>
         ) : null}
         <div>
           <ProductLoader circleId={id} products={this.state.circle.products} />

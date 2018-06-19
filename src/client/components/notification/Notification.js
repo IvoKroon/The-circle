@@ -8,7 +8,7 @@ import BoxIcon from '../icons/BoxIcon';
 const Holder = styled.div`
   display: flex;
   height: 70px;
-  width: 50%;
+  width: 80%;
   align-items: center;
   ${Shadow};
   margin-bottom: 10px;
@@ -26,7 +26,11 @@ const MessageHolder = styled.div`
   margin-left: 10px;
 `;
 const Name = styled.div`
+  color: black;
   font-weight: bold;
+`;
+const Strong = styled.strong`
+  color:black;
 `;
 
 const Message = styled.div`
@@ -38,13 +42,13 @@ const Notification = ({ item, name, type }) => {
   if (type === 'Searching') {
     text = (
       <Message>
-        is <strong>Searching</strong> for a <strong>{item}</strong>
+        is <Strong>Searching</Strong> for a <Strong>{item}</Strong>
       </Message>
     );
   } else if (type === 'Lent') {
     text = (
       <Message>
-        just <strong>Lent</strong> a <strong>{item}</strong>
+        just <Strong>Lent</Strong> a <Strong>{item}</Strong>
       </Message>
     );
   }

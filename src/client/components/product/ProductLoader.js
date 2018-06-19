@@ -18,22 +18,23 @@ export default class ProductLoader extends React.Component {
   }
   componentDidMount() {
     if (this.props.circleId) {
+      let products = [];
       const ref = firebase.database().ref(`circles/${this.props.circleId}/products`);
 
       ref.once('value', (snapshot) => {
-        const data = snapshot.val();
-        const products = Object.values(data);
-        const keys = Object.keys(data);
+        if (snapshot.val()) {
+          const data = snapshot.val();
+          products = Object.values(data);
+          const keys = Object.keys(data);
 
-        products.map((product, key) => {
-          const newProduct = product;
-          newProduct.id = keys[key];
-          return newProduct;
-        });
+          products.map((product, key) => {
+            const newProduct = product;
+            newProduct.id = keys[key];
+            return newProduct;
+          });
+        }
 
         this.setState({ products, loading: false });
-        console.log(data);
-        // data.id = id;
       });
     }
   }

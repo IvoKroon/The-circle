@@ -25,6 +25,7 @@ export default class NotificationLoader extends React.Component {
   componentDidMount() {
     const userId = JSON.parse(localStorage.getItem('user')).id;
     GetLatestNotifications(userId).then((data) => {
+      console.log(data);
       if (data) {
         this.setState({ loading: false, notifications: data });
       }

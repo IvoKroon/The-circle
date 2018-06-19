@@ -15,7 +15,12 @@ const ButtonStyle = styled.button`
   cursor: pointer;
   font-size: 16px;
   margin-right: 5px;
-  flex: 1;
+  &:only-child {
+    margin-right: 0;
+  }
+  &:last-child{
+    margin-right: 0;
+  }
 `;
 
 const Button = props => (

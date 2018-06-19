@@ -23,12 +23,19 @@ import CircleStore from './stores/CircleStore';
 import UserStore from './stores/UserStore';
 
 import firebase from './components/general/firebaseConfig';
+import RequestProduct from './components/pages/RequestProduct';
 
 injectGlobal(`
   *, body {
     margin:0;
     padding:0;
     box-sizing: inherit;
+    @media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 812px) 
+  and (orientation: portrait) { 
+}
+
   }
 
   body{
@@ -60,7 +67,7 @@ const removeUser = () => {
 };
 
 const LoadUser = () => {
-  const id = 1;
+  const id = 2;
   const messagesRef = firebase.database().ref(`users/${id}`);
   messagesRef.once('value', (snapshot) => {
     const { firstname, lastname } = snapshot.val();
@@ -79,16 +86,35 @@ const LoadUser = () => {
   });
 };
 
+const CreateRandomUser = () => {
+  const ref = firebase.database().ref('users');
+  const data = { firstname: 'test', lastname: 'test' };
+
+  ref.push(data).then((result) => {
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        id: result.key,
+        firstname: 'test',
+        lastname: 'lastname',
+      }),
+    );
+  });
+};
+
 @observer
 class App extends Component {
   render() {
     // FOR RESETTING
     // removeUser();
-
+    LoadUser();
     // we don't need to reload all the user data every refresh.
     // if (!localStorage.getItem('user')) {
-    LoadUser();
+    //   LoadUser();
+    // } else {
+    //   CreateRandomUser();
     // }
+
     return (
       <Provider circles={CircleStore} user={UserStore}>
         <Router>
@@ -104,6 +130,7 @@ class App extends Component {
               <Route path="/createproduct" component={CreateProduct} />
               <Route path="/products" component={Products} />
               <Route path="/notfound" component={NoMatch} />
+              <Route path="/requestproduct/:id" component={RequestProduct} />
               <Route component={NoMatch} />
             </Switch>
             <Footer />

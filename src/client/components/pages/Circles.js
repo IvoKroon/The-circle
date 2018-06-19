@@ -22,6 +22,10 @@ const SearchBarHolder = styled.div`
   width: 100%;
 `;
 
+const CircleAddHolder = styled.div`
+  margin-top: 20px;
+`;
+
 @inject('user', 'circles')
 @observer
 class Circles extends React.Component {
@@ -110,9 +114,11 @@ class Circles extends React.Component {
         <div>
           <h1>Let's find some circles</h1>
           <p>Or you can just create one!</p>
-          <Link to="createcircle">
-            <CircleItemAdd title="+ add Circle" />
-          </Link>
+          <CircleAddHolder>
+            <Link to="createcircle">
+              <CircleItemAdd title="+ add Circle" />
+            </Link>
+          </CircleAddHolder>
         </div>
       );
     }

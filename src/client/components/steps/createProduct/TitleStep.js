@@ -1,17 +1,36 @@
 import React from 'react';
+import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import TextField from '../../form/TextField';
+
+const Holder = styled.div`
+  width: 250px;
+`;
+
+const Desc = styled.div`
+  margin-top: 10px;
+`;
+
+const TextFieldHolder = styled.div`
+  margin-top: 20px;
+`;
+
+const Header = styled.h1`
+  text-align: center;
+`;
 
 const TitleStep = (props) => {
   const onChange = (e) => {
     onChange(e);
   };
   return (
-    <div>
-      <h1>Title toevoegen</h1>
-      <p>Wat voor instellingen moeten wij de Circle geven?</p>
-      <TextField onChange={props.onChange} placeHolder="Title" value={props.title} />
-    </div>
+    <Holder>
+      <Header>Add Product</Header>
+      <Desc>How is the product called?</Desc>
+      <TextFieldHolder>
+        <TextField onChange={props.onChange} placeHolder="Title" value={props.title} />
+      </TextFieldHolder>
+    </Holder>
   );
 };
 

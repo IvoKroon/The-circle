@@ -12,12 +12,15 @@ const ImageLoader = styled.img`
   height: 200px;
 `;
 const Container = styled.div`
+margin-top:20px;
   position: relative;
   width: 200px;
   height: 200px;
   cursor: pointer;
+  margin-left:auto;
+  margin-right:auto;
 `;
-const Holder = styled.div`
+const ImageContainer = styled.div`
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   position: absolute;
@@ -30,6 +33,18 @@ const Holder = styled.div`
 `;
 const ImageLoaderTitle = styled.div`
   color: white;
+`;
+
+const Holder = styled.div`
+  width: 250px;
+`;
+
+const Desc = styled.div`
+  margin-top: 10px;
+`;
+
+const Header = styled.h1`
+  text-align: center;
 `;
 
 class ImageStep extends React.Component {
@@ -45,14 +60,14 @@ class ImageStep extends React.Component {
   render() {
     console.log(this.props.image);
     return (
-      <div>
-        <h1>Step 2 - image</h1>
-        <p>Voeg een plaatje toe om de groep beter te herkennen</p>
+      <Holder>
+        <Header>Create product</Header>
+        <Desc>Add a recognizable picture</Desc>
         <Container onClick={() => this.imageLoader.click()}>
           <ImageLoader src={this.props.image} />
-          <Holder>
+          <ImageContainer>
             <ImageLoaderTitle>Add image</ImageLoaderTitle>
-          </Holder>
+          </ImageContainer>
         </Container>
         <ImageInput
           id="imageUploader"
@@ -60,7 +75,7 @@ class ImageStep extends React.Component {
           onChange={e => this.props.onChange(e)}
           type="file"
         />
-      </div>
+      </Holder>
     );
   }
 }

@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { Shadow, MainColor, SecondaryTextColor } from '../general/GlobalCss';
 
 const Holder = styled.div`
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 50px;
   display: flex;
   align-items: center;
+  justify-content:center;
 `;
 const Switch = styled.div`
   position: relative;

@@ -5,7 +5,7 @@ import styled from 'react-emotion';
 const Input = styled.input`
   border: none;
   border-bottom: solid black 2px;
-  width: 200px;
+  width: 100%;
   font-size: 16px;
 `;
 
