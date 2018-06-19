@@ -49,7 +49,8 @@ const Header = () => (
         width="60"
         height="60"
         alt="Circle logo"
-        src="https://firebasestorage.googleapis.com/v0/b/circle-2252a.appspot.com/o/logobigger.png?alt=media&token=92772282-ff97-4973-90b1-1ec0ec9d945a" />
+        src="https://firebasestorage.googleapis.com/v0/b/circle-2252a.appspot.com/o/logobigger.png?alt=media&token=92772282-ff97-4973-90b1-1ec0ec9d945a"
+      />
     </Link>
     <List>
       <Link to="/">
