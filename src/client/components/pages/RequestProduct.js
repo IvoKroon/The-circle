@@ -1,8 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'react-emotion';
+import Redirect from 'react-router-dom/Redirect';
 import TextField from '../form/TextField';
 import firebase from '../general/firebaseConfig';
-import Redirect from 'react-router-dom/Redirect';
+import Button from '../form/Button';
+
+const Holder = styled.div`
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const Desc = styled.div`
+  margin-top: 20px;
+`;
+
+const TextFieldHolder = styled.div`
+  margin-top: 20px;
+`;
+
+const Header = styled.h1`
+margin-top:20px;
+  text-align: center;
+`;
+
+const ButtonHolder = styled.div`
+  margin-top: 20px;
+`;
 
 export default class RequestProduct extends React.Component {
   constructor(props) {
@@ -36,15 +61,20 @@ export default class RequestProduct extends React.Component {
       return <Redirect to={`/circle/${id}`} />;
     }
     return (
-      <div>
-        <h1>Request Product</h1>
-        <TextField
-          onChange={e => this.setState({ request: e.target.value })}
-          value={this.state.request}
-          placeHolder="Product Name"
-        />
-        <button onClick={() => this.request()}>Request</button>
-      </div>
+      <Holder>
+        <Header>Request Product</Header>
+        <Desc>Fill in the title of the requested product.</Desc>
+        <TextFieldHolder>
+          <TextField
+            onChange={e => this.setState({ request: e.target.value })}
+            value={this.state.request}
+            placeHolder="Product Name"
+          />
+        </TextFieldHolder>
+        <ButtonHolder>
+          <Button onClick={() => this.request()}>Request</Button>
+        </ButtonHolder>
+      </Holder>
     );
   }
 }

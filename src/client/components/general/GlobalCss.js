@@ -10,15 +10,13 @@ const Shadow = 'box-shadow:0 3px 6px #d1cccc;';
 
 const MainContainer = styled('div')`
   height: 100%;
-  width: 1000px;
+  width: calc(100% - 300px);
   margin-left: auto;
   margin-right: auto;
   margin-top: 40px;
 `;
 
-const mediaquery = () => {
-
-};
+const mediaquery = () => {};
 
 const CapitalizeFirstLetter = string => string.charAt(0).toUpperCase() + string.slice(1);
 
