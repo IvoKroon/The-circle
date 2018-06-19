@@ -12,6 +12,7 @@ const HeaderContainer = styled('div')`
 `;
 const Image = styled.img`
   margin-right: 20px;
+  cursor:poiner;
 `;
 const ListItem = styled('li')`
   display: inline-block;
@@ -43,12 +44,14 @@ const List = styled('ul')`
 
 const Header = () => (
   <HeaderContainer>
-    <Image
-      width="60"
-      height="60"
-      alt="Circle logo"
-      src="https://firebasestorage.googleapis.com/v0/b/circle-2252a.appspot.com/o/logo2.png?alt=media&token=06dc3249-c357-4f8c-86b7-2d01eec27f4d"
-    />
+    <Link to="/">
+      <Image
+        width="60"
+        height="60"
+        alt="Circle logo"
+        src="https://firebasestorage.googleapis.com/v0/b/circle-2252a.appspot.com/o/logo2.png?alt=media&token=06dc3249-c357-4f8c-86b7-2d01eec27f4d"
+      />
+    </Link>
     <List>
       <Link to="/">
         <ListItem>Home</ListItem>
